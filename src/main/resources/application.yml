@@ -1,0 +1,51 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为8080
+  port: 8080
+  servlet:
+    # 应用的访问路径
+    context-path: /
+  tomcat:
+    # tomcat的URI编码
+    uri-encoding: UTF-8
+
+#application
+spring:
+  application:
+    name: YUEXIN Spring Boot NutzDao Vue前后端分离版
+    version: 4.0
+  freemarker:
+    check-template-location: false
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+
+management:
+  security:
+    enabled: false
+
+# 日志配置
+logging:
+  level:
+    com.yuexin: debug
+    org.springframework: warn
+
+#nutz-dao
+nutz:
+  dao:
+    runtime:
+      add-column: true
+      basepackage:
+        - com.yuexin.**.domain
+      check-index: true
+      create: true
+      delete-column: true
+      foce-create: false
+      migration: true
+    sqlmanager:
+      paths:
+        - sqls
+  json:
+    enabled: true
+    mode: compact
