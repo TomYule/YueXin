@@ -1,6 +1,6 @@
 package com.yuexin.config;
 
-import com.yuexin.async.ExceptionHandlingAsyncTaskExecutor;
+import io.github.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;

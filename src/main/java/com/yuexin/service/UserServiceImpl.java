@@ -14,6 +14,9 @@ import java.util.Optional;
 @Transactional
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
     private final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    public static String USERS_BY_LOGIN_CACHE = "usersByLogin";
+
+    public static String USERS_BY_EMAIL_CACHE = "usersByEmail";
 
     @Override
     public Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email) {
