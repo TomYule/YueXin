@@ -21,8 +21,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    public Optional<User> findOneWithAuthoritiesByLogin(String longin) {
-        return Optional.ofNullable(this.dao().fetchLinks(this.fetch(Cnd.where("longin","=",longin)),"authorities"));
+    public Optional<User> findOneWithAuthoritiesByLogin(String login) {
+        return Optional.ofNullable(this.dao().fetchLinks(this.fetch(Cnd.where("login","=",login)),"authorities"));
 
     }
 }

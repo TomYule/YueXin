@@ -1,9 +1,26 @@
-  ${AnsiColor.GREEN} ██╗   ██╗${AnsiColor.BLUE}██╗    ██╗███████╗    ██╗  ██╗██╗███╗ ${AnsiColor.GREEN}  ██╗
-  ${AnsiColor.GREEN} ╚██╗ ██╔╝██${AnsiColor.BLUE}║    ██║██╔════╝    ╚██╗██╔╝██║█${AnsiColor.GREEN}███╗  ██║
-  ${AnsiColor.GREEN}  ╚████╔╝ ██║ ${AnsiColor.BLUE}   ██║█████╗       ╚███╔╝ ${AnsiColor.GREEN}██║██╔██╗ ██║
-  ${AnsiColor.GREEN}   ╚██╔╝  ██║   ${AnsiColor.BLUE} ██║██╔══╝       ██╔${AnsiColor.GREEN}██╗ ██║██║╚██╗██║
-  ${AnsiColor.GREEN}    ██║   ╚██████╔${AnsiColor.BLUE} ╝███████╗    ${AnsiColor.GREEN}██╔╝ ██╗██║██║ ╚████║
-  ${AnsiColor.GREEN}    ╚═╝    ╚═════╝ ╚${AnsiColor.BLUE} ══════╝${AnsiColor.GREEN}    ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+ ┏┓　 　　　┏┓
+┏┛┻━━━━━━━━┛┻┓
+┃　　　　　　　┃
+┃　　　━　 　　┃
+┃　┳┛　┗┳　   ┃
+┃　　　　　  　┃
+┃　　　┻　　　 ┃
+┃　　　　　　  ┃
+┗━┓　　　   ┏━┛
+  ┃        ┃
+  ┃        ┃
+  ┃　　   　┗━━━┓
+  ┃　　　　　　　┣┓
+  ┃　　　　　　　┏┛
+  ┗┓┓┏━━━━━━┳┓┏┛
+   ┃┫┫　　　 ┃┫┫
+   ┗┻┛　　　 ┗┻┛
+ ${AnsiColor.GREEN} ██╗   ██╗${AnsiColor.BLUE}██╗    ██╗███████╗    ██╗  ██╗██╗███╗ ${AnsiColor.GREEN}  ██╗
+ ${AnsiColor.GREEN} ╚██╗ ██╔╝██${AnsiColor.BLUE}║    ██║██╔════╝    ╚██╗██╔╝██║█${AnsiColor.GREEN}███╗  ██║
+ ${AnsiColor.GREEN}  ╚████╔╝ ██║ ${AnsiColor.BLUE}   ██║█████╗       ╚███╔╝ ${AnsiColor.GREEN}██║██╔██╗ ██║
+ ${AnsiColor.GREEN}   ╚██╔╝  ██║   ${AnsiColor.BLUE} ██║██╔══╝       ██╔${AnsiColor.GREEN}██╗ ██║██║╚██╗██║
+ ${AnsiColor.GREEN}    ██║   ╚██████╔${AnsiColor.BLUE} ╝███████╗    ${AnsiColor.GREEN}██╔╝ ██╗██║██║ ╚████║
+ ${AnsiColor.GREEN}    ╚═╝    ╚═════╝ ╚${AnsiColor.BLUE} ══════╝${AnsiColor.GREEN}    ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 
 ${AnsiColor.BRIGHT_BLUE}:: Nutz 🤓 :: Running Spring Boot ${spring-boot.version} ::
 :: https://nutz.cn ::${AnsiColor.DEFAULT}
