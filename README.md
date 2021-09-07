@@ -13,6 +13,13 @@ After installing Node, you should be able to run the following command to instal
 You will only need to run this command when dependencies change in [package.json](package.json).
 
     npm install
+    
+    npm install --registry=https://registry.npm.taobao.org  --force  --legacy-peer-deps
+    
+    npm install --registry=https://registry.npm.taobao.org
+    
+    npm audit fix --force
+
 
 We use npm scripts and [Webpack][] as our build system.
 
