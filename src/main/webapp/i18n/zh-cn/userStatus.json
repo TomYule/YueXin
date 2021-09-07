@@ -1,0 +1,10 @@
+{
+  "yueXinApp": {
+    "UserStatus": {
+      "null": "",
+      "ENABLE": "ENABLE",
+      "DISABLE": "DISABLE",
+      "DELETED": "DELETED"
+    }
+  }
+}
