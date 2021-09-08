@@ -51,10 +51,10 @@ public class SysPost implements Serializable {
     @Lob
     @Column(name = "remark")
     private String remark;
-
-    @ManyToMany(mappedBy = "sysPosts")
-    @JsonIgnore
-    private Set<SysUser> sysUsers = new HashSet<>();
+//
+//    @ManyToMany(mappedBy = "sysPosts")
+//    @JsonIgnore
+//    private Set<SysUser> sysUsers = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -181,32 +181,32 @@ public class SysPost implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public Set<SysUser> getSysUsers() {
-        return sysUsers;
-    }
-
-    public SysPost sysUsers(Set<SysUser> sysUsers) {
-        this.sysUsers = sysUsers;
-        return this;
-    }
-
-    public SysPost addSysUser(SysUser sysUser) {
-        this.sysUsers.add(sysUser);
-        sysUser.getSysPosts().add(this);
-        return this;
-    }
-
-    public SysPost removeSysUser(SysUser sysUser) {
-        this.sysUsers.remove(sysUser);
-        sysUser.getSysPosts().remove(this);
-        return this;
-    }
-
-    public void setSysUsers(Set<SysUser> sysUsers) {
-        this.sysUsers = sysUsers;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+//
+//    public Set<SysUser> getSysUsers() {
+//        return sysUsers;
+//    }
+//
+//    public SysPost sysUsers(Set<SysUser> sysUsers) {
+//        this.sysUsers = sysUsers;
+//        return this;
+//    }
+//
+//    public SysPost addSysUser(SysUser sysUser) {
+//        this.sysUsers.add(sysUser);
+//        sysUser.getSysPosts().add(this);
+//        return this;
+//    }
+//
+//    public SysPost removeSysUser(SysUser sysUser) {
+//        this.sysUsers.remove(sysUser);
+//        sysUser.getSysPosts().remove(this);
+//        return this;
+//    }
+//
+//    public void setSysUsers(Set<SysUser> sysUsers) {
+//        this.sysUsers = sysUsers;
+//    }
+//    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

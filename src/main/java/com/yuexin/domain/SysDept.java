@@ -64,8 +64,8 @@ public class SysDept implements Serializable {
     @Column(name = "up_local_date")
     private LocalDate upLocalDate;
 
-    @OneToMany(mappedBy = "sysDept")
-    private Set<SysUser> deptIds = new HashSet<>();
+//    @OneToMany(mappedBy = "sysDept")
+//    private Set<SysUser> deptIds = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -244,31 +244,31 @@ public class SysDept implements Serializable {
     public void setUpLocalDate(LocalDate upLocalDate) {
         this.upLocalDate = upLocalDate;
     }
+//
+//    public Set<SysUser> getDeptIds() {
+//        return deptIds;
+//    }
+//
+//    public SysDept deptIds(Set<SysUser> sysUsers) {
+//        this.deptIds = sysUsers;
+//        return this;
+//    }
+//
+//    public SysDept addDeptId(SysUser sysUser) {
+//        this.deptIds.add(sysUser);
+//        sysUser.setSysDept(this);
+//        return this;
+//    }
+//
+//    public SysDept removeDeptId(SysUser sysUser) {
+//        this.deptIds.remove(sysUser);
+//        sysUser.setSysDept(null);
+//        return this;
+//    }
 
-    public Set<SysUser> getDeptIds() {
-        return deptIds;
-    }
-
-    public SysDept deptIds(Set<SysUser> sysUsers) {
-        this.deptIds = sysUsers;
-        return this;
-    }
-
-    public SysDept addDeptId(SysUser sysUser) {
-        this.deptIds.add(sysUser);
-        sysUser.setSysDept(this);
-        return this;
-    }
-
-    public SysDept removeDeptId(SysUser sysUser) {
-        this.deptIds.remove(sysUser);
-        sysUser.setSysDept(null);
-        return this;
-    }
-
-    public void setDeptIds(Set<SysUser> sysUsers) {
-        this.deptIds = sysUsers;
-    }
+//    public void setDeptIds(Set<SysUser> sysUsers) {
+//        this.deptIds = sysUsers;
+//    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override

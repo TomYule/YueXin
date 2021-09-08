@@ -28,16 +28,16 @@
                     <th v-on:click="changeOrder('roleName')"><span v-text="$t('yueXinApp.sysRole.roleName')">Role Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'roleName'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('roleKey')"><span v-text="$t('yueXinApp.sysRole.roleKey')">Role Key</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'roleKey'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('roleSort')"><span v-text="$t('yueXinApp.sysRole.roleSort')">Role Sort</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'roleSort'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('dataScope')"><span v-text="$t('yueXinApp.sysRole.dataScope')">Data Scope</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'dataScope'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('menuCheckStrictly')"><span v-text="$t('yueXinApp.sysRole.menuCheckStrictly')">Menu Check Strictly</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'menuCheckStrictly'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('deptCheckStrictly')"><span v-text="$t('yueXinApp.sysRole.deptCheckStrictly')">Dept Check Strictly</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'deptCheckStrictly'"></jhi-sort-indicator></th>
+<!--                    <th v-on:click="changeOrder('dataScope')"><span v-text="$t('yueXinApp.sysRole.dataScope')">Data Scope</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'dataScope'"></jhi-sort-indicator></th>-->
+<!--                    <th v-on:click="changeOrder('menuCheckStrictly')"><span v-text="$t('yueXinApp.sysRole.menuCheckStrictly')">Menu Check Strictly</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'menuCheckStrictly'"></jhi-sort-indicator></th>-->
+<!--                    <th v-on:click="changeOrder('deptCheckStrictly')"><span v-text="$t('yueXinApp.sysRole.deptCheckStrictly')">Dept Check Strictly</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'deptCheckStrictly'"></jhi-sort-indicator></th>-->
                     <th v-on:click="changeOrder('status')"><span v-text="$t('yueXinApp.sysRole.status')">Status</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'status'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('delFlag')"><span v-text="$t('yueXinApp.sysRole.delFlag')">Del Flag</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'delFlag'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('createBy')"><span v-text="$t('yueXinApp.sysRole.createBy')">Create By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createBy'"></jhi-sort-indicator></th>
+<!--                    <th v-on:click="changeOrder('delFlag')"><span v-text="$t('yueXinApp.sysRole.delFlag')">Del Flag</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'delFlag'"></jhi-sort-indicator></th>-->
+<!--                    <th v-on:click="changeOrder('createBy')"><span v-text="$t('yueXinApp.sysRole.createBy')">Create By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createBy'"></jhi-sort-indicator></th>-->
                     <th v-on:click="changeOrder('createTime')"><span v-text="$t('yueXinApp.sysRole.createTime')">Create Time</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createTime'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('updateBy')"><span v-text="$t('yueXinApp.sysRole.updateBy')">Update By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'updateBy'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('upLocalDate')"><span v-text="$t('yueXinApp.sysRole.upLocalDate')">Up Local Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'upLocalDate'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('remark')"><span v-text="$t('yueXinApp.sysRole.remark')">Remark</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'remark'"></jhi-sort-indicator></th>
+<!--                    <th v-on:click="changeOrder('updateBy')"><span v-text="$t('yueXinApp.sysRole.updateBy')">Update By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'updateBy'"></jhi-sort-indicator></th>-->
+<!--                    <th v-on:click="changeOrder('upLocalDate')"><span v-text="$t('yueXinApp.sysRole.upLocalDate')">Up Local Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'upLocalDate'"></jhi-sort-indicator></th>-->
+<!--                    <th v-on:click="changeOrder('remark')"><span v-text="$t('yueXinApp.sysRole.remark')">Remark</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'remark'"></jhi-sort-indicator></th>-->
                     <th></th>
                 </tr>
                 </thead>
@@ -50,16 +50,16 @@
                     <td>{{sysRole.roleName}}</td>
                     <td>{{sysRole.roleKey}}</td>
                     <td>{{sysRole.roleSort}}</td>
-                    <td>{{sysRole.dataScope}}</td>
-                    <td>{{sysRole.menuCheckStrictly}}</td>
-                    <td>{{sysRole.deptCheckStrictly}}</td>
+<!--                    <td>{{sysRole.dataScope}}</td>-->
+<!--                    <td>{{sysRole.menuCheckStrictly}}</td>-->
+<!--                    <td>{{sysRole.deptCheckStrictly}}</td>-->
                     <td>{{sysRole.status}}</td>
-                    <td>{{sysRole.delFlag}}</td>
-                    <td>{{sysRole.createBy}}</td>
+<!--                    <td>{{sysRole.delFlag}}</td>-->
+<!--                    <td>{{sysRole.createBy}}</td>-->
                     <td>{{sysRole.createTime}}</td>
-                    <td>{{sysRole.updateBy}}</td>
-                    <td>{{sysRole.upLocalDate}}</td>
-                    <td>{{sysRole.remark}}</td>
+<!--                    <td>{{sysRole.updateBy}}</td>-->
+<!--                    <td>{{sysRole.upLocalDate}}</td>-->
+<!--                    <td>{{sysRole.remark}}</td>-->
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'SysRoleView', params: {sysRoleId: sysRole.id}}" tag="button" class="btn btn-info btn-sm details">

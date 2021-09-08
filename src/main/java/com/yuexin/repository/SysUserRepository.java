@@ -16,14 +16,14 @@ import java.util.Optional;
  */
 @Repository
 public interface SysUserRepository extends JpaRepository<SysUser, Long> {
-
-    @Query(value = "select distinct sysUser from SysUser sysUser left join fetch sysUser.sysPosts",
-        countQuery = "select count(distinct sysUser) from SysUser sysUser")
-    Page<SysUser> findAllWithEagerRelationships(Pageable pageable);
-
-    @Query("select distinct sysUser from SysUser sysUser left join fetch sysUser.sysPosts")
-    List<SysUser> findAllWithEagerRelationships();
-
-    @Query("select sysUser from SysUser sysUser left join fetch sysUser.sysPosts where sysUser.id =:id")
-    Optional<SysUser> findOneWithEagerRelationships(@Param("id") Long id);
+//
+//    @Query(value = "select distinct sysUser from SysUser sysUser left join fetch sysUser.sysPosts",
+//        countQuery = "select count(distinct sysUser) from SysUser sysUser")
+//    Page<SysUser> findAllWithEagerRelationships(Pageable pageable);
+//
+//    @Query("select distinct sysUser from SysUser sysUser left join fetch sysUser.sysPosts")
+//    List<SysUser> findAllWithEagerRelationships();
+//
+//    @Query("select sysUser from SysUser sysUser left join fetch sysUser.sysPosts where sysUser.id =:id")
+//    Optional<SysUser> findOneWithEagerRelationships(@Param("id") Long id);
 }

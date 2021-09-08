@@ -96,9 +96,9 @@ public class SysUserResource {
     @GetMapping("/sys-users")
     public ResponseEntity<List<SysUser>> getAllSysUsers(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of SysUsers");
-        Page<SysUser> page;
+        Page<SysUser> page = null;
         if (eagerload) {
-            page = sysUserRepository.findAllWithEagerRelationships(pageable);
+//            page = sysUserRepository.findAllWithEagerRelationships(pageable);
         } else {
             page = sysUserRepository.findAll(pageable);
         }
@@ -115,7 +115,7 @@ public class SysUserResource {
     @GetMapping("/sys-users/{id}")
     public ResponseEntity<SysUser> getSysUser(@PathVariable Long id) {
         log.debug("REST request to get SysUser : {}", id);
-        Optional<SysUser> sysUser = sysUserRepository.findOneWithEagerRelationships(id);
+        Optional<SysUser> sysUser = sysUserRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(sysUser);
     }
 

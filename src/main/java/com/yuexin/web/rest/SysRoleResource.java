@@ -1,7 +1,7 @@
 package com.yuexin.web.rest;
 
 import com.yuexin.domain.SysRole;
-import com.yuexin.repository.SysRoleRepository;
+import com.yuexin.service.SysRoleService;
 import com.yuexin.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,11 +40,14 @@ public class SysRoleResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SysRoleRepository sysRoleRepository;
+//    private final SysRoleRepository sysRoleRepository;
 
-    public SysRoleResource(SysRoleRepository sysRoleRepository) {
-        this.sysRoleRepository = sysRoleRepository;
-    }
+    @Autowired
+    private SysRoleService sysRoleService;
+
+//    public SysRoleResource(SysRoleRepository sysRoleRepository) {
+//        this.sysRoleRepository = sysRoleRepository;
+//    }
 
     /**
      * {@code POST  /sys-roles} : Create a new sysRole.
@@ -58,7 +62,7 @@ public class SysRoleResource {
         if (sysRole.getId() != null) {
             throw new BadRequestAlertException("A new sysRole cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SysRole result = sysRoleRepository.save(sysRole);
+        SysRole result = sysRoleService.insert(sysRole);
         return ResponseEntity.created(new URI("/api/sys-roles/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -79,10 +83,11 @@ public class SysRoleResource {
         if (sysRole.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        SysRole result = sysRoleRepository.save(sysRole);
+        sysRoleService.update(sysRole);
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sysRole.getId().toString()))
-            .body(result);
+            .body(sysRole);
     }
 
     /**
@@ -95,11 +100,11 @@ public class SysRoleResource {
     @GetMapping("/sys-roles")
     public ResponseEntity<List<SysRole>> getAllSysRoles(Pageable pageable, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get a page of SysRoles");
-        Page<SysRole> page;
+        Page<SysRole> page = null;
         if (eagerload) {
-            page = sysRoleRepository.findAllWithEagerRelationships(pageable);
+//            page = sysRoleRepository.findAllWithEagerRelationships(pageable);
         } else {
-            page = sysRoleRepository.findAll(pageable);
+            page = sysRoleService.query(pageable);
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -114,7 +119,7 @@ public class SysRoleResource {
     @GetMapping("/sys-roles/{id}")
     public ResponseEntity<SysRole> getSysRole(@PathVariable Long id) {
         log.debug("REST request to get SysRole : {}", id);
-        Optional<SysRole> sysRole = sysRoleRepository.findOneWithEagerRelationships(id);
+        Optional<SysRole> sysRole = Optional.ofNullable(sysRoleService.fetch(id));
         return ResponseUtil.wrapOrNotFound(sysRole);
     }
 
@@ -127,7 +132,7 @@ public class SysRoleResource {
     @DeleteMapping("/sys-roles/{id}")
     public ResponseEntity<Void> deleteSysRole(@PathVariable Long id) {
         log.debug("REST request to delete SysRole : {}", id);
-        sysRoleRepository.deleteById(id);
+        sysRoleService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

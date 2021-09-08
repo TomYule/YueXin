@@ -88,20 +88,20 @@ public class SysUser implements Serializable {
     @Lob
     @Column(name = "remark")
     private String remark;
-
-    @ManyToMany
-    @JoinTable(name = "sys_user_sys_post",
-               joinColumns = @JoinColumn(name = "sys_user_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "sys_post_id", referencedColumnName = "id"))
-    private Set<SysPost> sysPosts = new HashSet<>();
-
-    @ManyToOne
-    @JsonIgnoreProperties(value = "deptIds", allowSetters = true)
-    private SysDept sysDept;
-
-    @ManyToMany(mappedBy = "sysUsers")
-    @JsonIgnore
-    private Set<SysRole> sysRoles = new HashSet<>();
+//
+//    @ManyToMany
+//    @JoinTable(name = "sys_user_sys_post",
+//               joinColumns = @JoinColumn(name = "sys_user_id", referencedColumnName = "id"),
+//               inverseJoinColumns = @JoinColumn(name = "sys_post_id", referencedColumnName = "id"))
+//    private Set<SysPost> sysPosts = new HashSet<>();
+//
+//    @ManyToOne
+//    @JsonIgnoreProperties(value = "deptIds", allowSetters = true)
+//    private SysDept sysDept;
+//
+//    @ManyToMany(mappedBy = "sysUsers")
+//    @JsonIgnore
+//    private Set<SysRole> sysRoles = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -345,70 +345,70 @@ public class SysUser implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-    public Set<SysPost> getSysPosts() {
-        return sysPosts;
-    }
-
-    public SysUser sysPosts(Set<SysPost> sysPosts) {
-        this.sysPosts = sysPosts;
-        return this;
-    }
-
-    public SysUser addSysPost(SysPost sysPost) {
-        this.sysPosts.add(sysPost);
-        sysPost.getSysUsers().add(this);
-        return this;
-    }
-
-    public SysUser removeSysPost(SysPost sysPost) {
-        this.sysPosts.remove(sysPost);
-        sysPost.getSysUsers().remove(this);
-        return this;
-    }
-
-    public void setSysPosts(Set<SysPost> sysPosts) {
-        this.sysPosts = sysPosts;
-    }
-
-    public SysDept getSysDept() {
-        return sysDept;
-    }
-
-    public SysUser sysDept(SysDept sysDept) {
-        this.sysDept = sysDept;
-        return this;
-    }
-
-    public void setSysDept(SysDept sysDept) {
-        this.sysDept = sysDept;
-    }
-
-    public Set<SysRole> getSysRoles() {
-        return sysRoles;
-    }
-
-    public SysUser sysRoles(Set<SysRole> sysRoles) {
-        this.sysRoles = sysRoles;
-        return this;
-    }
-
-    public SysUser addSysRole(SysRole sysRole) {
-        this.sysRoles.add(sysRole);
-        sysRole.getSysUsers().add(this);
-        return this;
-    }
-
-    public SysUser removeSysRole(SysRole sysRole) {
-        this.sysRoles.remove(sysRole);
-        sysRole.getSysUsers().remove(this);
-        return this;
-    }
-
-    public void setSysRoles(Set<SysRole> sysRoles) {
-        this.sysRoles = sysRoles;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+//
+//    public Set<SysPost> getSysPosts() {
+//        return sysPosts;
+//    }
+//
+//    public SysUser sysPosts(Set<SysPost> sysPosts) {
+//        this.sysPosts = sysPosts;
+//        return this;
+//    }
+//
+//    public SysUser addSysPost(SysPost sysPost) {
+//        this.sysPosts.add(sysPost);
+//        sysPost.getSysUsers().add(this);
+//        return this;
+//    }
+//
+//    public SysUser removeSysPost(SysPost sysPost) {
+//        this.sysPosts.remove(sysPost);
+//        sysPost.getSysUsers().remove(this);
+//        return this;
+//    }
+//
+//    public void setSysPosts(Set<SysPost> sysPosts) {
+//        this.sysPosts = sysPosts;
+//    }
+//
+//    public SysDept getSysDept() {
+//        return sysDept;
+//    }
+//
+//    public SysUser sysDept(SysDept sysDept) {
+//        this.sysDept = sysDept;
+//        return this;
+//    }
+//
+//    public void setSysDept(SysDept sysDept) {
+//        this.sysDept = sysDept;
+//    }
+//
+//    public Set<SysRole> getSysRoles() {
+//        return sysRoles;
+//    }
+//
+//    public SysUser sysRoles(Set<SysRole> sysRoles) {
+//        this.sysRoles = sysRoles;
+//        return this;
+//    }
+//
+//    public SysUser addSysRole(SysRole sysRole) {
+//        this.sysRoles.add(sysRole);
+//        sysRole.getSysUsers().add(this);
+//        return this;
+//    }
+//
+//    public SysUser removeSysRole(SysRole sysRole) {
+//        this.sysRoles.remove(sysRole);
+//        sysRole.getSysUsers().remove(this);
+//        return this;
+//    }
+//
+//    public void setSysRoles(Set<SysRole> sysRoles) {
+//        this.sysRoles = sysRoles;
+//    }
+//    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

@@ -1,6 +1,13 @@
 package com.yuexin.domain;
 
+import com.yuexin.common.base.BaseModel;
 import io.swagger.annotations.ApiModel;
+import org.nutz.dao.entity.annotation.*;
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
+import org.nutz.plugin.spring.boot.service.entity.DataBaseEntity;
+import org.nutz.plugins.validation.annotation.Validations;
 
 import javax.persistence.*;
 
@@ -13,69 +20,129 @@ import java.util.Set;
  * 角色信息表 entity.\n@author haiming
  */
 @ApiModel(description = "角色信息表 entity.\n@author haiming")
-@Entity
-@Table(name = "sys_role")
-public class SysRole implements Serializable {
+@Table("sys_role")
+public class SysRole extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @org.nutz.dao.entity.annotation.Column
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Comment("ID")
+    @ColDefine(type = ColType.VARCHAR, width = 32)
+    @Prev(els = {@EL("uuid()")})
     private Long id;
 
-    @Column(name = "role_name")
+    /**
+     * 角色名称
+     */
+    @org.nutz.dao.entity.annotation.Column("role_name")
+    @Comment("角色名称 ")
+    @Validations(required = true, errorMsg = "角色名称不能为空")
     private String roleName;
 
-    @Column(name = "role_key")
+    /**
+     * 角色权限
+     */
+    @org.nutz.dao.entity.annotation.Column("role_key")
+    @Comment("角色权限")
+    @Validations(required = true, errorMsg = "角色权限不能为空")
     private String roleKey;
 
-    @Column(name = "role_sort")
-    private Integer roleSort;
+    /**
+     * 角色排序
+     */
+    @org.nutz.dao.entity.annotation.Column("role_sort")
+    @Comment("角色排序")
+    @Validations(required = true, errorMsg = "角色排序不能为空")
+    private String roleSort;
 
-    @Column(name = "data_scope")
+    /**
+     * 数据范围（1：所有数据权限；2：自定义数据权限）
+     */
+    @org.nutz.dao.entity.annotation.Column("data_scope")
+    @Comment("数据范围 ")
     private String dataScope;
 
-    @Column(name = "menu_check_strictly")
-    private Integer menuCheckStrictly;
+    /**
+     * 角色状态（0正常 1停用）
+     */
+    @org.nutz.dao.entity.annotation.Column("status")
+    @Comment("角色状态（0正常 1停用） ")
+    private boolean status;
 
-    @Column(name = "dept_check_strictly")
-    private Integer deptCheckStrictly;
+    /**
+     * 删除标志（0代表存在 1代表删除）
+     */
+    @org.nutz.dao.entity.annotation.Column("del_flag")
+    @Comment("删除标记")
+    @ColDefine(type = ColType.BOOLEAN)
+    private boolean delFlag;
 
-    @Column(name = "status")
-    private String status;
+    /**
+     * 用户是否存在此角色标识 默认不存在
+     */
+    private boolean flag = false;
 
-    @Column(name = "del_flag")
-    private String delFlag;
-
-    @Column(name = "create_by")
-    private String createBy;
-
-    @Column(name = "create_time")
-    private LocalDate createTime;
-
-    @Column(name = "update_by")
-    private String updateBy;
-
-    @Column(name = "up_local_date")
-    private LocalDate upLocalDate;
-
-    @Lob
-    @Column(name = "remark")
+    @Column
+    @Comment("备注")
     private String remark;
 
-    @ManyToMany
-    @JoinTable(name = "sys_role_sys_menu",
-               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "sys_menu_id", referencedColumnName = "id"))
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+//
+//    @Column(name = "role_name")
+//    private String roleName;
+//
+//    @Column(name = "role_key")
+//    private String roleKey;
+//
+//    @Column(name = "role_sort")
+//    private Integer roleSort;
+//
+//    @Column(name = "data_scope")
+//    private String dataScope;
+//
+//    @Column(name = "menu_check_strictly")
+//    private Integer menuCheckStrictly;
+//
+//    @Column(name = "dept_check_strictly")
+//    private Integer deptCheckStrictly;
+//
+//    @Column(name = "status")
+//    private String status;
+//
+//    @Column(name = "del_flag")
+//    private String delFlag;
+//
+//    @Column(name = "create_by")
+//    private String createBy;
+//
+//    @Column(name = "create_time")
+//    private LocalDate createTime;
+//
+//    @Column(name = "update_by")
+//    private String updateBy;
+//
+//    @Column(name = "up_local_date")
+//    private LocalDate upLocalDate;
+//
+//    @Lob
+//    @Column(name = "remark")
+//    private String remark;
+
+//    @ManyToMany
+//    @JoinTable(name = "sys_role_sys_menu",
+//               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),
+//               inverseJoinColumns = @JoinColumn(name = "sys_menu_id", referencedColumnName = "id"))
     private Set<SysMenu> sysMenus = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(name = "sys_role_sys_user",
-               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "sys_user_id", referencedColumnName = "id"))
+//    @ManyToMany
+//    @JoinTable(name = "sys_role_sys_user",
+//               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),
+//               inverseJoinColumns = @JoinColumn(name = "sys_user_id", referencedColumnName = "id"))
     private Set<SysUser> sysUsers = new HashSet<>();
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -88,11 +155,6 @@ public class SysRole implements Serializable {
         return roleName;
     }
 
-    public SysRole roleName(String roleName) {
-        this.roleName = roleName;
-        return this;
-    }
-
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
@@ -101,25 +163,15 @@ public class SysRole implements Serializable {
         return roleKey;
     }
 
-    public SysRole roleKey(String roleKey) {
-        this.roleKey = roleKey;
-        return this;
-    }
-
     public void setRoleKey(String roleKey) {
         this.roleKey = roleKey;
     }
 
-    public Integer getRoleSort() {
+    public String getRoleSort() {
         return roleSort;
     }
 
-    public SysRole roleSort(Integer roleSort) {
-        this.roleSort = roleSort;
-        return this;
-    }
-
-    public void setRoleSort(Integer roleSort) {
+    public void setRoleSort(String roleSort) {
         this.roleSort = roleSort;
     }
 
@@ -127,126 +179,36 @@ public class SysRole implements Serializable {
         return dataScope;
     }
 
-    public SysRole dataScope(String dataScope) {
-        this.dataScope = dataScope;
-        return this;
-    }
-
     public void setDataScope(String dataScope) {
         this.dataScope = dataScope;
     }
 
-    public Integer getMenuCheckStrictly() {
-        return menuCheckStrictly;
-    }
-
-    public SysRole menuCheckStrictly(Integer menuCheckStrictly) {
-        this.menuCheckStrictly = menuCheckStrictly;
-        return this;
-    }
-
-    public void setMenuCheckStrictly(Integer menuCheckStrictly) {
-        this.menuCheckStrictly = menuCheckStrictly;
-    }
-
-    public Integer getDeptCheckStrictly() {
-        return deptCheckStrictly;
-    }
-
-    public SysRole deptCheckStrictly(Integer deptCheckStrictly) {
-        this.deptCheckStrictly = deptCheckStrictly;
-        return this;
-    }
-
-    public void setDeptCheckStrictly(Integer deptCheckStrictly) {
-        this.deptCheckStrictly = deptCheckStrictly;
-    }
-
-    public String getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public SysRole status(String status) {
-        this.status = status;
-        return this;
-    }
-
-    public void setStatus(String status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public String getDelFlag() {
+    public boolean isDelFlag() {
         return delFlag;
     }
 
-    public SysRole delFlag(String delFlag) {
-        this.delFlag = delFlag;
-        return this;
-    }
-
-    public void setDelFlag(String delFlag) {
+    public void setDelFlag(boolean delFlag) {
         this.delFlag = delFlag;
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public boolean isFlag() {
+        return flag;
     }
 
-    public SysRole createBy(String createBy) {
-        this.createBy = createBy;
-        return this;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public LocalDate getCreateTime() {
-        return createTime;
-    }
-
-    public SysRole createTime(LocalDate createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
-    public void setCreateTime(LocalDate createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public SysRole updateBy(String updateBy) {
-        this.updateBy = updateBy;
-        return this;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public LocalDate getUpLocalDate() {
-        return upLocalDate;
-    }
-
-    public SysRole upLocalDate(LocalDate upLocalDate) {
-        this.upLocalDate = upLocalDate;
-        return this;
-    }
-
-    public void setUpLocalDate(LocalDate upLocalDate) {
-        this.upLocalDate = upLocalDate;
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     public String getRemark() {
         return remark;
-    }
-
-    public SysRole remark(String remark) {
-        this.remark = remark;
-        return this;
     }
 
     public void setRemark(String remark) {
@@ -257,23 +219,6 @@ public class SysRole implements Serializable {
         return sysMenus;
     }
 
-    public SysRole sysMenus(Set<SysMenu> sysMenus) {
-        this.sysMenus = sysMenus;
-        return this;
-    }
-
-    public SysRole addSysMenu(SysMenu sysMenu) {
-        this.sysMenus.add(sysMenu);
-        sysMenu.getSysRoles().add(this);
-        return this;
-    }
-
-    public SysRole removeSysMenu(SysMenu sysMenu) {
-        this.sysMenus.remove(sysMenu);
-        sysMenu.getSysRoles().remove(this);
-        return this;
-    }
-
     public void setSysMenus(Set<SysMenu> sysMenus) {
         this.sysMenus = sysMenus;
     }
@@ -282,27 +227,9 @@ public class SysRole implements Serializable {
         return sysUsers;
     }
 
-    public SysRole sysUsers(Set<SysUser> sysUsers) {
-        this.sysUsers = sysUsers;
-        return this;
-    }
-
-    public SysRole addSysUser(SysUser sysUser) {
-        this.sysUsers.add(sysUser);
-        sysUser.getSysRoles().add(this);
-        return this;
-    }
-
-    public SysRole removeSysUser(SysUser sysUser) {
-        this.sysUsers.remove(sysUser);
-        sysUser.getSysRoles().remove(this);
-        return this;
-    }
-
     public void setSysUsers(Set<SysUser> sysUsers) {
         this.sysUsers = sysUsers;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -329,14 +256,9 @@ public class SysRole implements Serializable {
             ", roleKey='" + getRoleKey() + "'" +
             ", roleSort=" + getRoleSort() +
             ", dataScope='" + getDataScope() + "'" +
-            ", menuCheckStrictly=" + getMenuCheckStrictly() +
-            ", deptCheckStrictly=" + getDeptCheckStrictly() +
-            ", status='" + getStatus() + "'" +
-            ", delFlag='" + getDelFlag() + "'" +
             ", createBy='" + getCreateBy() + "'" +
             ", createTime='" + getCreateTime() + "'" +
             ", updateBy='" + getUpdateBy() + "'" +
-            ", upLocalDate='" + getUpLocalDate() + "'" +
             ", remark='" + getRemark() + "'" +
             "}";
     }

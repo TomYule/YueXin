@@ -2,30 +2,30 @@
   "yueXinApp": {
     "sysRole": {
       "home": {
-        "title": "Sys Roles",
-        "createLabel": "创建新 Sys Role",
-        "createOrEditLabel": "创建或编辑 Sys Role",
-        "notFound": "No Sys Roles found"
+        "title": "角色管理",
+        "createLabel": "创建新 角色",
+        "createOrEditLabel": "创建或编辑 角色",
+        "notFound": "角色没有找到"
       },
-      "created": "Sys Role {{ param }} 创建成功",
-      "updated": "Sys Role {{ param }} 更新成功",
-      "deleted": "Sys Role {{ param }} 删除成功",
+      "created": "角色管理 {{ param }} 创建成功",
+      "updated": "角色管理 {{ param }} 更新成功",
+      "deleted": "角色管理 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Sys Role {{ id }} 吗？"
+        "question": "你确定要删除 角色 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Sys Role"
+        "title": "角色管理"
       },
-      "roleName": "Role Name",
-      "roleKey": "Role Key",
-      "roleSort": "Role Sort",
+      "roleName": "角色名称",
+      "roleKey": "权限字符",
+      "roleSort": "显示顺序",
       "dataScope": "Data Scope",
       "menuCheckStrictly": "Menu Check Strictly",
       "deptCheckStrictly": "Dept Check Strictly",
-      "status": "Status",
+      "status": "状态",
       "delFlag": "Del Flag",
       "createBy": "Create By",
-      "createTime": "Create Time",
+      "createTime": "创建时间",
       "updateBy": "Update By",
       "upLocalDate": "Up Local Date",
       "remark": "Remark",

@@ -275,26 +275,26 @@ public class SysUserResourceIT {
             .andExpect(jsonPath("$.[*].upLocalDate").value(hasItem(DEFAULT_UP_LOCAL_DATE.toString())))
             .andExpect(jsonPath("$.[*].remark").value(hasItem(DEFAULT_REMARK.toString())));
     }
-    
-    @SuppressWarnings({"unchecked"})
-    public void getAllSysUsersWithEagerRelationshipsIsEnabled() throws Exception {
-        when(sysUserRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restSysUserMockMvc.perform(get("/api/sys-users?eagerload=true"))
-            .andExpect(status().isOk());
-
-        verify(sysUserRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
-
-    @SuppressWarnings({"unchecked"})
-    public void getAllSysUsersWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(sysUserRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
-
-        restSysUserMockMvc.perform(get("/api/sys-users?eagerload=true"))
-            .andExpect(status().isOk());
-
-        verify(sysUserRepositoryMock, times(1)).findAllWithEagerRelationships(any());
-    }
+//
+//    @SuppressWarnings({"unchecked"})
+//    public void getAllSysUsersWithEagerRelationshipsIsEnabled() throws Exception {
+//        when(sysUserRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+//
+//        restSysUserMockMvc.perform(get("/api/sys-users?eagerload=true"))
+//            .andExpect(status().isOk());
+//
+//        verify(sysUserRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+//    }
+//
+//    @SuppressWarnings({"unchecked"})
+//    public void getAllSysUsersWithEagerRelationshipsIsNotEnabled() throws Exception {
+//        when(sysUserRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+//
+//        restSysUserMockMvc.perform(get("/api/sys-users?eagerload=true"))
+//            .andExpect(status().isOk());
+//
+//        verify(sysUserRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+//    }
 
     @Test
     @Transactional
