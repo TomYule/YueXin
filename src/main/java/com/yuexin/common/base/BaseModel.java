@@ -40,15 +40,16 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
         return R.UU32().toLowerCase();
     }
 
-//    public String uid() {
-//        try {
+    public String uid() {
+        try {
 //            Subject subject = SecurityUtils.getSubject();
 //            User user = (User) subject.getPrincipal();
 //            return user == null ? "" : user.getId();
-//        } catch (Exception e) {
-//            return "";
-//        }
-//    }
+        } catch (Exception e) {
+            return "";
+        }
+        return "";
+    }
 
     public Date now() {
         return new Date();

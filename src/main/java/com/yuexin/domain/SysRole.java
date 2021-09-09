@@ -28,8 +28,6 @@ public class SysRole extends BaseModel implements Serializable {
     @org.nutz.dao.entity.annotation.Column
     @Id
     @Comment("ID")
-    @ColDefine(type = ColType.VARCHAR, width = 32)
-    @Prev(els = {@EL("uuid()")})
     private Long id;
 
     /**
