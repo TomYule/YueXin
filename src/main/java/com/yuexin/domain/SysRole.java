@@ -6,13 +6,9 @@ import org.nutz.dao.entity.annotation.*;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
-import org.nutz.plugin.spring.boot.service.entity.DataBaseEntity;
-import org.nutz.plugins.validation.annotation.Validations;
-
-import javax.persistence.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,109 +21,75 @@ public class SysRole extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @org.nutz.dao.entity.annotation.Column
     @Id
-    @Comment("ID")
+    @Column("id")
+    @Comment("角色ID")
     private Long id;
 
-    /**
-     * 角色名称
-     */
-    @org.nutz.dao.entity.annotation.Column("role_name")
-    @Comment("角色名称 ")
-    @Validations(required = true, errorMsg = "角色名称不能为空")
+    /** 角色名称 */
+    @Column("role_name")
+    @Comment("角色名称")
     private String roleName;
 
-    /**
-     * 角色权限
-     */
-    @org.nutz.dao.entity.annotation.Column("role_key")
-    @Comment("角色权限")
-    @Validations(required = true, errorMsg = "角色权限不能为空")
+    /** 角色权限字符串 */
+    @Column("role_key")
+    @Comment("角色权限字符串")
     private String roleKey;
 
-    /**
-     * 角色排序
-     */
-    @org.nutz.dao.entity.annotation.Column("role_sort")
-    @Comment("角色排序")
-    @Validations(required = true, errorMsg = "角色排序不能为空")
-    private String roleSort;
+    /** 显示顺序 */
+    @Column("role_sort")
+    @Comment("显示顺序")
+    private Integer roleSort;
 
-    /**
-     * 数据范围（1：所有数据权限；2：自定义数据权限）
-     */
-    @org.nutz.dao.entity.annotation.Column("data_scope")
-    @Comment("数据范围 ")
+    /** 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限） */
+    @Column("data_scope")
+    @Comment("数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）")
     private String dataScope;
 
-    /**
-     * 角色状态（0正常 1停用）
-     */
-    @org.nutz.dao.entity.annotation.Column("status")
-    @Comment("角色状态（0正常 1停用） ")
-    private boolean status;
+    /** 菜单树选择项是否关联显示 */
+    @Column("menu_check_strictly")
+    @Comment("菜单树选择项是否关联显示")
+    private Integer menuCheckStrictly;
 
-    /**
-     * 删除标志（0代表存在 1代表删除）
-     */
-    @org.nutz.dao.entity.annotation.Column("del_flag")
-    @Comment("删除标记")
-    @ColDefine(type = ColType.BOOLEAN)
-    private boolean delFlag;
+    /** 部门树选择项是否关联显示 */
+    @Column("dept_check_strictly")
+    @Comment("部门树选择项是否关联显示")
+    private Integer deptCheckStrictly;
 
-    /**
-     * 用户是否存在此角色标识 默认不存在
-     */
-    private boolean flag = false;
+    /** 角色状态（0正常 1停用） */
+    @Column("status")
+    @Comment("角色状态（0正常 1停用）")
+    private Boolean status;
 
-    @Column
+    /** 删除标志（0代表存在 2代表删除） */
+    @Column("del_flag")
+    @Comment("删除标志（0代表存在 2代表删除）")
+    private Boolean delFlag;
+
+    /** 创建者 */
+    @Column("create_by")
+    @Comment("创建者")
+    private String createBy;
+
+    /** 创建时间 */
+    @Column("create_time")
+    @Comment("创建时间")
+    private Date createTime;
+
+    /** 更新者 */
+    @Column("update_by")
+    @Comment("更新者")
+    private String updateBy;
+
+    /** 更新时间 */
+    @Column("update_time")
+    @Comment("更新时间")
+    private Date updateTime;
+
+    /** 备注 */
+    @Column("remark")
     @Comment("备注")
     private String remark;
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @Column(name = "role_name")
-//    private String roleName;
-//
-//    @Column(name = "role_key")
-//    private String roleKey;
-//
-//    @Column(name = "role_sort")
-//    private Integer roleSort;
-//
-//    @Column(name = "data_scope")
-//    private String dataScope;
-//
-//    @Column(name = "menu_check_strictly")
-//    private Integer menuCheckStrictly;
-//
-//    @Column(name = "dept_check_strictly")
-//    private Integer deptCheckStrictly;
-//
-//    @Column(name = "status")
-//    private String status;
-//
-//    @Column(name = "del_flag")
-//    private String delFlag;
-//
-//    @Column(name = "create_by")
-//    private String createBy;
-//
-//    @Column(name = "create_time")
-//    private LocalDate createTime;
-//
-//    @Column(name = "update_by")
-//    private String updateBy;
-//
-//    @Column(name = "up_local_date")
-//    private LocalDate upLocalDate;
-//
-//    @Lob
-//    @Column(name = "remark")
-//    private String remark;
 
 //    @ManyToMany
 //    @JoinTable(name = "sys_role_sys_menu",
@@ -165,11 +127,11 @@ public class SysRole extends BaseModel implements Serializable {
         this.roleKey = roleKey;
     }
 
-    public String getRoleSort() {
+    public Integer getRoleSort() {
         return roleSort;
     }
 
-    public void setRoleSort(String roleSort) {
+    public void setRoleSort(Integer roleSort) {
         this.roleSort = roleSort;
     }
 
@@ -181,28 +143,76 @@ public class SysRole extends BaseModel implements Serializable {
         this.dataScope = dataScope;
     }
 
-    public boolean isStatus() {
+    public Integer getMenuCheckStrictly() {
+        return menuCheckStrictly;
+    }
+
+    public void setMenuCheckStrictly(Integer menuCheckStrictly) {
+        this.menuCheckStrictly = menuCheckStrictly;
+    }
+
+    public Integer getDeptCheckStrictly() {
+        return deptCheckStrictly;
+    }
+
+    public void setDeptCheckStrictly(Integer deptCheckStrictly) {
+        this.deptCheckStrictly = deptCheckStrictly;
+    }
+
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public boolean isDelFlag() {
+    public Boolean getDelFlag() {
         return delFlag;
     }
 
-    public void setDelFlag(boolean delFlag) {
+    public void setDelFlag(Boolean delFlag) {
         this.delFlag = delFlag;
     }
 
-    public boolean isFlag() {
-        return flag;
+    @Override
+    public String getCreateBy() {
+        return createBy;
     }
 
-    public void setFlag(boolean flag) {
-        this.flag = flag;
+    @Override
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    @Override
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    @Override
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    @Override
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getRemark() {
@@ -211,22 +221,6 @@ public class SysRole extends BaseModel implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public Set<SysMenu> getSysMenus() {
-        return sysMenus;
-    }
-
-    public void setSysMenus(Set<SysMenu> sysMenus) {
-        this.sysMenus = sysMenus;
-    }
-
-    public Set<SysUser> getSysUsers() {
-        return sysUsers;
-    }
-
-    public void setSysUsers(Set<SysUser> sysUsers) {
-        this.sysUsers = sysUsers;
     }
 
     @Override
@@ -245,19 +239,25 @@ public class SysRole extends BaseModel implements Serializable {
         return 31;
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "SysRole{" +
-            "id=" + getId() +
-            ", roleName='" + getRoleName() + "'" +
-            ", roleKey='" + getRoleKey() + "'" +
-            ", roleSort=" + getRoleSort() +
-            ", dataScope='" + getDataScope() + "'" +
-            ", createBy='" + getCreateBy() + "'" +
-            ", createTime='" + getCreateTime() + "'" +
-            ", updateBy='" + getUpdateBy() + "'" +
-            ", remark='" + getRemark() + "'" +
-            "}";
+            "id=" + id +
+            ", roleName='" + roleName + '\'' +
+            ", roleKey='" + roleKey + '\'' +
+            ", roleSort=" + roleSort +
+            ", dataScope='" + dataScope + '\'' +
+            ", menuCheckStrictly=" + menuCheckStrictly +
+            ", deptCheckStrictly=" + deptCheckStrictly +
+            ", status=" + status +
+            ", delFlag=" + delFlag +
+            ", createBy='" + createBy + '\'' +
+            ", createTime=" + createTime +
+            ", updateBy='" + updateBy + '\'' +
+            ", updateTime=" + updateTime +
+            ", remark='" + remark + '\'' +
+            ", sysMenus=" + sysMenus +
+            ", sysUsers=" + sysUsers +
+            '}';
     }
 }

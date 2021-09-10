@@ -406,6 +406,7 @@ public class BaseServiceImpl<T> extends IdNameEntityService<T> implements BaseSe
             }
         });
         List<T> list = this.dao().query(this.getEntityClass(), cnd, pager);
+        pager.setRecordCount(this.dao().count(getEntityClass(), cnd));
         return new PageImpl(list, pageable, pager.getRecordCount());
     }
 
@@ -421,6 +422,7 @@ public class BaseServiceImpl<T> extends IdNameEntityService<T> implements BaseSe
             }
         });
         List<T> list = this.dao().query(this.getEntityClass(), cnd, pager);
+        pager.setRecordCount(this.dao().count(getEntityClass(), cnd));
         return new PageImpl(list, pageable, pager.getRecordCount());
     }
 
@@ -439,6 +441,7 @@ public class BaseServiceImpl<T> extends IdNameEntityService<T> implements BaseSe
         if (!Strings.isBlank(linkname)) {
             this.dao().fetchLinks(list, linkname);
         }
+        pager.setRecordCount(this.dao().count(getEntityClass(), cnd));
         return new PageImpl(list, pageable, pager.getRecordCount());
     }
 

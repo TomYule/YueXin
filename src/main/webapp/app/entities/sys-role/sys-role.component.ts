@@ -27,6 +27,12 @@ export default class SysRole extends mixins(JhiDataUtils, AlertMixin) {
 
   public isFetching = false;
 
+  data() {
+    return {
+      tableData: this.sysRoles
+    }
+  }
+
   public mounted(): void {
     this.retrieveAllSysRoles();
   }
@@ -88,18 +94,32 @@ export default class SysRole extends mixins(JhiDataUtils, AlertMixin) {
   }
 
   public loadPage(page: number): void {
+    console.log(page);
     if (page !== this.previousPage) {
       this.previousPage = page;
       this.transition();
     }
   }
 
+  handleSizeChange(val) {
+    console.log(`每页 ${val} 条`);
+    this.itemsPerPage =val;
+    this.transition();
+  }
+
+  handleCurrentChange(val) {
+    console.log(`当前页: ${val}`);
+    this.page = val;
+    this.transition();
+  }
+
   public transition(): void {
     this.retrieveAllSysRoles();
   }
 
-  public changeOrder(propOrder): void {
-    this.propOrder = propOrder;
+  public changeOrder(column): void {
+    // console.log(column);
+    this.propOrder =  column.prop;
     this.reverse = !this.reverse;
     this.transition();
   }
