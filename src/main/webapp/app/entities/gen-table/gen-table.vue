@@ -1,19 +1,108 @@
 <template>
     <div>
-        <h2 id="page-heading">
-            <span v-text="$t('yueXinApp.genTable.home.title')" id="gen-table-heading">Gen Tables</span>
-            <router-link :to="{name: 'GenTableCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gen-table">
-                <font-awesome-icon icon="plus"></font-awesome-icon>
-                <span  v-text="$t('yueXinApp.genTable.home.createLabel')">
-                    Create a new Gen Table
-                </span>
-            </router-link>
-        </h2>
+        <!--        <h2 id="page-heading">-->
+        <!--            <span v-text="$t('yueXinApp.genTable.home.title')" id="gen-table-heading">Gen Tables</span>-->
+        <!--            <router-link :to="{name: 'GenTableCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gen-table">-->
+        <!--                <font-awesome-icon icon="plus"></font-awesome-icon>-->
+        <!--                <span  v-text="$t('yueXinApp.genTable.home.createLabel')">-->
+        <!--                    Create a new Gen Table-->
+        <!--                </span>-->
+        <!--            </router-link>-->
+        <!--        </h2>-->
+        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
+            <el-form-item label="表名称" prop="tableName">
+                <el-input
+                    v-model="queryParams.tableName"
+                    placeholder="请输入表名称"
+                    clearable
+                    size="small"
+                    @keyup.enter.native="transition()"
+                />
+            </el-form-item>
+            <el-form-item label="表描述" prop="tableComment">
+                <el-input
+                    v-model="queryParams.tableComment"
+                    placeholder="请输入表描述"
+                    clearable
+                    size="small"
+                    @keyup.enter.native="transition()"
+                />
+            </el-form-item>
+            <el-form-item label="创建时间">
+                <!--                <el-date-picker-->
+                <!--                    v-model="dateRange"-->
+                <!--                    size="small"-->
+                <!--                    style="width: 240px"-->
+                <!--                    value-format="yyyy-MM-dd"-->
+                <!--                    range-separator="-"-->
+                <!--                    start-placeholder="开始日期"-->
+                <!--                    end-placeholder="结束日期"-->
+                <!--                ></el-date-picker>-->
+                <el-date-picker
+                    v-model="value6"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="transition()">搜索</el-button>
+                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+                <el-button
+                    type="primary"
+                    plain
+                    icon="el-icon-download"
+                    size="mini"
+                    @click="handleGenTable"
+                >生成
+                </el-button>
+            </el-col>
+            <el-col :span="1.5">
+                <el-button
+                    type="info"
+                    plain
+                    icon="el-icon-upload"
+                    size="mini"
+                    @click="openImportTable"
+                >导入
+                </el-button>
+            </el-col>
+            <el-col :span="1.5">
+                <el-button
+                    type="success"
+                    plain
+                    icon="el-icon-edit"
+                    size="mini"
+                    @click="handleEditTable"
+                >修改
+                </el-button>
+            </el-col>
+            <el-col :span="1.5">
+                <el-button
+                    type="danger"
+                    plain
+                    icon="el-icon-delete"
+                    size="mini"
+                    @click="handleDelete"
+                >删除
+                </el-button>
+            </el-col>
+<!--            <right-toolbar :showSearch.sync="showSearch" @queryTable="transition()"></right-toolbar>-->
+        </el-row>
+
         <b-alert :show="dismissCountDown"
-            dismissible
-            :variant="alertType"
-            @dismissed="dismissCountDown=0"
-            @dismiss-count-down="countDownChanged">
+                 dismissible
+                 :variant="alertType"
+                 @dismissed="dismissCountDown=0"
+                 @dismiss-count-down="countDownChanged">
             {{alertMessage}}
         </b-alert>
         <br/>
@@ -21,81 +110,95 @@
             <span v-text="$t('yueXinApp.genTable.home.notFound')">No genTables found</span>
         </div>
         <div class="table-responsive" v-if="genTables && genTables.length > 0">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th v-on:click="changeOrder('id')"><span v-text="$t('global.field.id')">ID</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'id'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('tableName')"><span v-text="$t('yueXinApp.genTable.tableName')">Table Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tableName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('tableComment')"><span v-text="$t('yueXinApp.genTable.tableComment')">Table Comment</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tableComment'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('subTableName')"><span v-text="$t('yueXinApp.genTable.subTableName')">Sub Table Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subTableName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('subTableFkName')"><span v-text="$t('yueXinApp.genTable.subTableFkName')">Sub Table Fk Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subTableFkName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('className')"><span v-text="$t('yueXinApp.genTable.className')">Class Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'className'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('tplCategory')"><span v-text="$t('yueXinApp.genTable.tplCategory')">Tpl Category</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tplCategory'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('packAgeName')"><span v-text="$t('yueXinApp.genTable.packAgeName')">Pack Age Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'packAgeName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('moduleName')"><span v-text="$t('yueXinApp.genTable.moduleName')">Module Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'moduleName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('businessName')"><span v-text="$t('yueXinApp.genTable.businessName')">Business Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'businessName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('functionName')"><span v-text="$t('yueXinApp.genTable.functionName')">Function Name</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'functionName'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('functionAuthor')"><span v-text="$t('yueXinApp.genTable.functionAuthor')">Function Author</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'functionAuthor'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('genType')"><span v-text="$t('yueXinApp.genTable.genType')">Gen Type</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'genType'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('genPath')"><span v-text="$t('yueXinApp.genTable.genPath')">Gen Path</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'genPath'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('options')"><span v-text="$t('yueXinApp.genTable.options')">Options</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'options'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('createBy')"><span v-text="$t('yueXinApp.genTable.createBy')">Create By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createBy'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('createTime')"><span v-text="$t('yueXinApp.genTable.createTime')">Create Time</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'createTime'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('updateBy')"><span v-text="$t('yueXinApp.genTable.updateBy')">Update By</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'updateBy'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('upLocalDate')"><span v-text="$t('yueXinApp.genTable.upLocalDate')">Up Local Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'upLocalDate'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('remark')"><span v-text="$t('yueXinApp.genTable.remark')">Remark</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'remark'"></jhi-sort-indicator></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="genTable in genTables"
-                    :key="genTable.id">
-                    <td>
-                        <router-link :to="{name: 'GenTableView', params: {genTableId: genTable.id}}">{{genTable.id}}</router-link>
-                    </td>
-                    <td>{{genTable.tableName}}</td>
-                    <td>{{genTable.tableComment}}</td>
-                    <td>{{genTable.subTableName}}</td>
-                    <td>{{genTable.subTableFkName}}</td>
-                    <td>{{genTable.className}}</td>
-                    <td>{{genTable.tplCategory}}</td>
-                    <td>{{genTable.packAgeName}}</td>
-                    <td>{{genTable.moduleName}}</td>
-                    <td>{{genTable.businessName}}</td>
-                    <td>{{genTable.functionName}}</td>
-                    <td>{{genTable.functionAuthor}}</td>
-                    <td>{{genTable.genType}}</td>
-                    <td>{{genTable.genPath}}</td>
-                    <td>{{genTable.options}}</td>
-                    <td>{{genTable.createBy}}</td>
-                    <td>{{genTable.createTime}}</td>
-                    <td>{{genTable.updateBy}}</td>
-                    <td>{{genTable.upLocalDate}}</td>
-                    <td>{{genTable.remark}}</td>
-                    <td class="text-right">
+
+            <el-table :data="genTables">
+                <el-table-column type="selection" align="center" width="55"></el-table-column>
+
+                <el-table-column
+                    label="表名称"
+                    align="center"
+                    prop="tableName"
+                    :show-overflow-tooltip="true"
+                    sortable
+                />
+                <el-table-column
+                    label="表描述"
+                    align="center"
+                    prop="tableComment"
+                    :show-overflow-tooltip="true"
+                    sortable
+                />
+                <el-table-column
+                    label="实体"
+                    align="center"
+                    prop="className"
+                    :show-overflow-tooltip="true"
+                    sortable
+                />
+                <el-table-column label="创建时间" align="center" prop="createTime" width="180" sortable/>
+                <el-table-column label="更新时间" align="center" prop="updateTime" width="180" sortable/>
+                <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+                    <template slot-scope="scope">
                         <div class="btn-group">
-                            <router-link :to="{name: 'GenTableView', params: {genTableId: genTable.id}}" tag="button" class="btn btn-info btn-sm details">
+                            <router-link :to="{name: 'GenTableView', params: {genTableId: scope.row.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.view')">View</span>
                             </router-link>
-                            <router-link :to="{name: 'GenTableEdit', params: {genTableId: genTable.id}}"  tag="button" class="btn btn-primary btn-sm edit">
+                            <router-link :to="{name: 'GenTableEdit', params: {genTableId: scope.row.id}}" tag="button" class="btn btn-primary btn-sm edit">
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.edit')">Edit</span>
                             </router-link>
                             <b-button v-on:click="prepareRemove(genTable)"
-                                   variant="danger"
-                                   class="btn btn-sm"
-                                   v-b-modal.removeEntity>
+                                      variant="danger"
+                                      class="btn btn-sm"
+                                      v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.delete')">Delete</span>
                             </b-button>
                         </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                    </template>
+                    <!--                    <template slot-scope="scope">-->
+                    <!--                        <el-button-->
+                    <!--                            type="text"-->
+                    <!--                            size="small"-->
+                    <!--                            icon="el-icon-view"-->
+                    <!--                            @click="handlePreview(scope.row)"-->
+                    <!--                            v-hasPermi="['tool:gen:preview']"-->
+                    <!--                        >预览</el-button>-->
+                    <!--                        <el-button-->
+                    <!--                            type="text"-->
+                    <!--                            size="small"-->
+                    <!--                            icon="el-icon-edit"-->
+                    <!--                            @click="handleEditTable(scope.row)"-->
+                    <!--                            v-hasPermi="['tool:gen:edit']"-->
+                    <!--                        >编辑</el-button>-->
+                    <!--                        <el-button-->
+                    <!--                            type="text"-->
+                    <!--                            size="small"-->
+                    <!--                            icon="el-icon-delete"-->
+                    <!--                            @click="handleDelete(scope.row)"-->
+                    <!--                            v-hasPermi="['tool:gen:remove']"-->
+                    <!--                        >删除</el-button>-->
+                    <!--                        <el-button-->
+                    <!--                            type="text"-->
+                    <!--                            size="small"-->
+                    <!--                            icon="el-icon-refresh"-->
+                    <!--                            @click="handleSynchDb(scope.row)"-->
+                    <!--                            v-hasPermi="['tool:gen:edit']"-->
+                    <!--                        >同步</el-button>-->
+                    <!--                        <el-button-->
+                    <!--                            type="text"-->
+                    <!--                            size="small"-->
+                    <!--                            icon="el-icon-download"-->
+                    <!--                            @click="handleGenTable(scope.row)"-->
+                    <!--                            v-hasPermi="['tool:gen:code']"-->
+                    <!--                        >生成代码</el-button>-->
+                    <!--                    </template>-->
+                </el-table-column>
+            </el-table>
+
         </div>
-        <b-modal ref="removeEntity" id="removeEntity" >
+        <b-modal ref="removeEntity" id="removeEntity">
             <span slot="modal-title"><span id="yueXinApp.genTable.delete.question" v-text="$t('entity.delete.title')">Confirm delete operation</span></span>
             <div class="modal-body">
                 <p id="jhi-delete-genTable-heading" v-text="$t('yueXinApp.genTable.delete.question', {'id': removeId})">Are you sure you want to delete this Gen Table?</p>
@@ -105,13 +208,25 @@
                 <button type="button" class="btn btn-primary" id="jhi-confirm-delete-genTable" v-text="$t('entity.action.delete')" v-on:click="removeGenTable()">Delete</button>
             </div>
         </b-modal>
-        <div v-show="genTables && genTables.length > 0">
-            <div class="row justify-content-center">
-                <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>
-            </div>
-            <div class="row justify-content-center">
-                <b-pagination size="md" :total-rows="totalItems" v-model="page" :per-page="itemsPerPage" :change="loadPage(page)"></b-pagination>
-            </div>
+
+        <!--        <div v-show="genTables && genTables.length > 0">-->
+        <!--            <div class="row justify-content-center">-->
+        <!--                <jhi-item-count :page="page" :total="queryCount" :itemsPerPage="itemsPerPage"></jhi-item-count>-->
+        <!--            </div>-->
+        <!--            <div class="row justify-content-center">-->
+        <!--                <b-pagination size="md" :total-rows="totalItems" v-model="page" :per-page="itemsPerPage" :change="loadPage(page)"></b-pagination>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="row justify-content-center">
+            <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="page"
+                :page-sizes="[20,100, 200, 300, 400]"
+                :page-size="itemsPerPage"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="queryCount">
+            </el-pagination>
         </div>
     </div>
 </template>

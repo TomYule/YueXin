@@ -88,8 +88,8 @@ public class GenTableColumn implements Serializable {
     @Column(name = "remark")
     private String remark;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = "tableIds", allowSetters = true)
+//    @ManyToOne
+//    @JsonIgnoreProperties(value = "tableIds", allowSetters = true)
     private GenTable genTable;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

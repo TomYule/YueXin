@@ -27,12 +27,6 @@ export default class SysRole extends mixins(JhiDataUtils, AlertMixin) {
 
   public isFetching = false;
 
-  data() {
-    return {
-      tableData: this.sysRoles
-    }
-  }
-
   public mounted(): void {
     this.retrieveAllSysRoles();
   }

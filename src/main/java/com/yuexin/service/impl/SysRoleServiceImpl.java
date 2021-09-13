@@ -1,7 +1,8 @@
-package com.yuexin.service;
+package com.yuexin.service.impl;
 
 import com.yuexin.common.service.BaseServiceImpl;
 import com.yuexin.domain.SysRole;
+import com.yuexin.service.SysRoleService;
 import org.springframework.stereotype.Service;
 
 /**

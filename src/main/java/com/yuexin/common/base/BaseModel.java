@@ -8,7 +8,7 @@ import org.nutz.lang.random.R;
 import org.nutz.plugin.spring.boot.service.entity.DataBaseEntity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author Hamming_Yu on 2018/12/29.
@@ -24,7 +24,7 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
 
     @Column("create_time")
     @Prev(els = {@EL("$me.now()")})
-    protected Date createTime;
+    protected LocalDateTime createTime;
 
     @Column("update_by")
     @Comment("更新者")
@@ -34,7 +34,12 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
 
     @Prev(els=@EL("$me.now()"))
     @Column("update_time")
-    protected Date updateTime;
+    protected LocalDateTime updateTime;
+
+    /** 备注 */
+    @Column("remark")
+    @Comment("备注")
+    protected String remark;
 
     public String uuid() {
         return R.UU32().toLowerCase();
@@ -51,23 +56,23 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
         return "";
     }
 
-    public Date now() {
-        return new Date();
+    public LocalDateTime now() {
+        return LocalDateTime.now();
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
-    public Date getUpdateTime() {
+    public LocalDateTime getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -87,4 +92,11 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
         this.updateBy = updateBy;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }

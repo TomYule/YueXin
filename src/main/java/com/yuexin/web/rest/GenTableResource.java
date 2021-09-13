@@ -1,7 +1,8 @@
 package com.yuexin.web.rest;
 
 import com.yuexin.domain.GenTable;
-import com.yuexin.repository.GenTableRepository;
+import com.yuexin.service.GenTableService;
+import com.yuexin.service.SysRoleService;
 import com.yuexin.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -9,6 +10,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,11 +42,8 @@ public class GenTableResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final GenTableRepository genTableRepository;
-
-    public GenTableResource(GenTableRepository genTableRepository) {
-        this.genTableRepository = genTableRepository;
-    }
+    @Autowired
+    private GenTableService genTableService;
 
     /**
      * {@code POST  /gen-tables} : Create a new genTable.
@@ -59,7 +58,7 @@ public class GenTableResource {
         if (genTable.getId() != null) {
             throw new BadRequestAlertException("A new genTable cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        GenTable result = genTableRepository.save(genTable);
+        GenTable result = genTableService.insert(genTable);
         return ResponseEntity.created(new URI("/api/gen-tables/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,10 +79,10 @@ public class GenTableResource {
         if (genTable.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        GenTable result = genTableRepository.save(genTable);
+        genTableService.update(genTable);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, genTable.getId().toString()))
-            .body(result);
+            .body(genTable);
     }
 
     /**
@@ -95,7 +94,7 @@ public class GenTableResource {
     @GetMapping("/gen-tables")
     public ResponseEntity<List<GenTable>> getAllGenTables(Pageable pageable) {
         log.debug("REST request to get a page of GenTables");
-        Page<GenTable> page = genTableRepository.findAll(pageable);
+        Page<GenTable> page = genTableService.query(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -109,7 +108,7 @@ public class GenTableResource {
     @GetMapping("/gen-tables/{id}")
     public ResponseEntity<GenTable> getGenTable(@PathVariable Long id) {
         log.debug("REST request to get GenTable : {}", id);
-        Optional<GenTable> genTable = genTableRepository.findById(id);
+        Optional<GenTable> genTable = Optional.ofNullable(genTableService.fetch(id));
         return ResponseUtil.wrapOrNotFound(genTable);
     }
 
@@ -122,7 +121,7 @@ public class GenTableResource {
     @DeleteMapping("/gen-tables/{id}")
     public ResponseEntity<Void> deleteGenTable(@PathVariable Long id) {
         log.debug("REST request to delete GenTable : {}", id);
-        genTableRepository.deleteById(id);
+        genTableService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

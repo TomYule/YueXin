@@ -22,6 +22,49 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
+  // 显示搜索条件
+  public showSearch = true;
+  // 日期范围
+  public dateRange: "";
+  // 查询参数
+  public  queryParams=  {
+    tableName: undefined,
+    tableComment: undefined
+  };
+
+  data() {
+    return {
+      pickerOptions2: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+      value6: '',
+      value7: ''
+    };
+  }
 
   public genTables: IGenTable[] = [];
 
@@ -93,7 +136,64 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
       this.transition();
     }
   }
+  public  handleSizeChange(val) {
+    console.log(`每页 ${val} 条`);
+    this.itemsPerPage =val;
+    this.transition();
+  }
 
+  public handleCurrentChange(val) {
+    console.log(`当前页: ${val}`);
+    this.page = val;
+    this.transition();
+  }
+  /** 生成代码操作 */
+  public handleGenTable(row) {
+    // const tableNames = row.tableName || this.tableNames;
+    // if (tableNames == "") {
+    //   this.msgError("请选择要生成的数据");
+    //   return;
+    // }
+    // if(row.genType === "1") {
+    //   genCode(row.tableName).then(response => {
+    //     this.msgSuccess("成功生成到自定义路径：" + row.genPath);
+    //   });
+    // } else {
+    //   downLoadZip("/tool/gen/batchGenCode?tables=" + tableNames, "ruoyi");
+    // }
+  };
+  /** 打开导入表弹窗 */
+  public openImportTable() {
+    // this.$refs.import.show();
+  };
+
+  /** 修改按钮操作 */
+  public handleEditTable(row) {
+    // const tableId = row.tableId || this.ids[0];
+    // this.$router.push({ path: '/tool/gen-edit/index', query: { tableId: tableId, pageNum: this.queryParams.pageNum } });
+  };
+
+  /** 删除按钮操作 */
+  public handleDelete(row) {
+    // const tableIds = row.tableId || this.ids;
+    // this.$confirm('是否确认删除表编号为"' + tableIds + '"的数据项?', "警告", {
+    //   confirmButtonText: "确定",
+    //   cancelButtonText: "取消",
+    //   type: "warning"
+    // }).then(function() {
+    //   return delTable(tableIds);
+    // }).then(() => {
+    //   this.getList();
+    //   this.msgSuccess("删除成功");
+    // }).catch(() => {});
+  }
+
+  /** 重置按钮操作 */
+  public resetQuery() {
+    // this.dateRange = [];
+    // this.resetForm("queryForm");
+    this.transition();
+  }
   public transition(): void {
     this.retrieveAllGenTables();
   }
