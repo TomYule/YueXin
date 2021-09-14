@@ -8,8 +8,7 @@ import org.nutz.dao.entity.annotation.Id;
 import org.nutz.dao.entity.annotation.Table;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * 代码生成业务表 gen_table
@@ -27,6 +26,7 @@ public class GenTable extends BaseModel implements Serializable {
     /** 表名称 */
     @Column("table_name")
     @Comment("表名称")
+    @Name
     private String tableName;
 
     /** 表描述 */
@@ -94,7 +94,14 @@ public class GenTable extends BaseModel implements Serializable {
     @Comment("其它生成选项")
     private String options;
 
-    private Set<GenTableColumn> tableIds = new HashSet<>();
+    /** 子表信息 */
+    private GenTable subTable;
+    /** 主键信息 */
+    private GenTableColumn pkColumn;
+
+    /** 表列信息 */
+    @Many(field = "tableId" ,key = "id")
+    private List<GenTableColumn> columns;
 
     public Long getId() {
         return id;
@@ -216,31 +223,29 @@ public class GenTable extends BaseModel implements Serializable {
         this.options = options;
     }
 
-    public Set<GenTableColumn> getTableIds() {
-        return tableIds;
+    public GenTable getSubTable() {
+        return subTable;
     }
 
-    public GenTable tableIds(Set<GenTableColumn> genTableColumns) {
-        this.tableIds = genTableColumns;
-        return this;
+    public void setSubTable(GenTable subTable) {
+        this.subTable = subTable;
     }
 
-    public GenTable addTableId(GenTableColumn genTableColumn) {
-        this.tableIds.add(genTableColumn);
-        genTableColumn.setGenTable(this);
-        return this;
+    public GenTableColumn getPkColumn() {
+        return pkColumn;
     }
 
-    public GenTable removeTableId(GenTableColumn genTableColumn) {
-        this.tableIds.remove(genTableColumn);
-        genTableColumn.setGenTable(null);
-        return this;
+    public void setPkColumn(GenTableColumn pkColumn) {
+        this.pkColumn = pkColumn;
     }
 
-    public void setTableIds(Set<GenTableColumn> genTableColumns) {
-        this.tableIds = genTableColumns;
+    public List<GenTableColumn> getColumns() {
+        return columns;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    public void setColumns(List<GenTableColumn> columns) {
+        this.columns = columns;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -281,7 +286,6 @@ public class GenTable extends BaseModel implements Serializable {
             ", updateBy='" + updateBy + '\'' +
             ", updateTime=" + updateTime +
             ", remark='" + remark + '\'' +
-            ", tableIds=" + tableIds +
             '}';
     }
 }

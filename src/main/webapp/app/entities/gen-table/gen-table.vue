@@ -29,18 +29,10 @@
                 />
             </el-form-item>
             <el-form-item label="创建时间">
-                <!--                <el-date-picker-->
-                <!--                    v-model="dateRange"-->
-                <!--                    size="small"-->
-                <!--                    style="width: 240px"-->
-                <!--                    value-format="yyyy-MM-dd"-->
-                <!--                    range-separator="-"-->
-                <!--                    start-placeholder="开始日期"-->
-                <!--                    end-placeholder="结束日期"-->
-                <!--                ></el-date-picker>-->
                 <el-date-picker
-                    v-model="value6"
+                    v-model="dateRange"
                     type="daterange"
+                    :picker-options="pickerOptions"
                     align="right"
                     unlink-panels
                     range-separator="至"
@@ -140,6 +132,12 @@
                 <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                     <template slot-scope="scope">
                         <div class="btn-group">
+                            <el-button
+                                type="primary"
+                                size="small"
+                                icon="el-icon-view"
+                                @click="handlePreview(scope.row)"
+                            >预览</el-button>
                             <router-link :to="{name: 'GenTableView', params: {genTableId: scope.row.id}}" tag="button" class="btn btn-info btn-sm details">
                                 <font-awesome-icon icon="eye"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.view')">View</span>
@@ -155,45 +153,38 @@
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.delete')">Delete</span>
                             </b-button>
+
+                            <!--                        <el-button-->
+                            <!--                            type="text"-->
+                            <!--                            size="small"-->
+                            <!--                            icon="el-icon-edit"-->
+                            <!--                            @click="handleEditTable(scope.row)"-->
+                            <!--                            v-hasPermi="['tool:gen:edit']"-->
+                            <!--                        >编辑</el-button>-->
+                            <!--                        <el-button-->
+                            <!--                            type="text"-->
+                            <!--                            size="small"-->
+                            <!--                            icon="el-icon-delete"-->
+                            <!--                            @click="handleDelete(scope.row)"-->
+                            <!--                            v-hasPermi="['tool:gen:remove']"-->
+                            <!--                        >删除</el-button>-->
+                            <!--                        <el-button-->
+                            <!--                            type="text"-->
+                            <!--                            size="small"-->
+                            <!--                            icon="el-icon-refresh"-->
+                            <!--                            @click="handleSynchDb(scope.row)"-->
+                            <!--                            v-hasPermi="['tool:gen:edit']"-->
+                            <!--                        >同步</el-button>-->
+                            <!--                        <el-button-->
+                            <!--                            type="text"-->
+                            <!--                            size="small"-->
+                            <!--                            icon="el-icon-download"-->
+                            <!--                            @click="handleGenTable(scope.row)"-->
+                            <!--                            v-hasPermi="['tool:gen:code']"-->
+                            <!--                        >生成代码</el-button>-->
                         </div>
                     </template>
-                    <!--                    <template slot-scope="scope">-->
-                    <!--                        <el-button-->
-                    <!--                            type="text"-->
-                    <!--                            size="small"-->
-                    <!--                            icon="el-icon-view"-->
-                    <!--                            @click="handlePreview(scope.row)"-->
-                    <!--                            v-hasPermi="['tool:gen:preview']"-->
-                    <!--                        >预览</el-button>-->
-                    <!--                        <el-button-->
-                    <!--                            type="text"-->
-                    <!--                            size="small"-->
-                    <!--                            icon="el-icon-edit"-->
-                    <!--                            @click="handleEditTable(scope.row)"-->
-                    <!--                            v-hasPermi="['tool:gen:edit']"-->
-                    <!--                        >编辑</el-button>-->
-                    <!--                        <el-button-->
-                    <!--                            type="text"-->
-                    <!--                            size="small"-->
-                    <!--                            icon="el-icon-delete"-->
-                    <!--                            @click="handleDelete(scope.row)"-->
-                    <!--                            v-hasPermi="['tool:gen:remove']"-->
-                    <!--                        >删除</el-button>-->
-                    <!--                        <el-button-->
-                    <!--                            type="text"-->
-                    <!--                            size="small"-->
-                    <!--                            icon="el-icon-refresh"-->
-                    <!--                            @click="handleSynchDb(scope.row)"-->
-                    <!--                            v-hasPermi="['tool:gen:edit']"-->
-                    <!--                        >同步</el-button>-->
-                    <!--                        <el-button-->
-                    <!--                            type="text"-->
-                    <!--                            size="small"-->
-                    <!--                            icon="el-icon-download"-->
-                    <!--                            @click="handleGenTable(scope.row)"-->
-                    <!--                            v-hasPermi="['tool:gen:code']"-->
-                    <!--                        >生成代码</el-button>-->
-                    <!--                    </template>-->
+
                 </el-table-column>
             </el-table>
 

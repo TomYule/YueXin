@@ -1,7 +1,7 @@
 package com.yuexin.web.rest;
 
 import com.yuexin.domain.GenTableColumn;
-import com.yuexin.repository.GenTableColumnRepository;
+import com.yuexin.service.GenTableColumnService;
 import com.yuexin.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -40,10 +40,10 @@ public class GenTableColumnResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final GenTableColumnRepository genTableColumnRepository;
+    private final GenTableColumnService genTableColumnService;
 
-    public GenTableColumnResource(GenTableColumnRepository genTableColumnRepository) {
-        this.genTableColumnRepository = genTableColumnRepository;
+    public GenTableColumnResource(GenTableColumnService genTableColumnService) {
+        this.genTableColumnService = genTableColumnService;
     }
 
     /**
@@ -59,7 +59,7 @@ public class GenTableColumnResource {
         if (genTableColumn.getId() != null) {
             throw new BadRequestAlertException("A new genTableColumn cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        GenTableColumn result = genTableColumnRepository.save(genTableColumn);
+        GenTableColumn result = genTableColumnService.insert(genTableColumn);
         return ResponseEntity.created(new URI("/api/gen-table-columns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -80,10 +80,10 @@ public class GenTableColumnResource {
         if (genTableColumn.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        GenTableColumn result = genTableColumnRepository.save(genTableColumn);
+        genTableColumnService.update(genTableColumn);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, genTableColumn.getId().toString()))
-            .body(result);
+            .body(genTableColumn);
     }
 
     /**
@@ -95,7 +95,7 @@ public class GenTableColumnResource {
     @GetMapping("/gen-table-columns")
     public ResponseEntity<List<GenTableColumn>> getAllGenTableColumns(Pageable pageable) {
         log.debug("REST request to get a page of GenTableColumns");
-        Page<GenTableColumn> page = genTableColumnRepository.findAll(pageable);
+        Page<GenTableColumn> page = genTableColumnService.query(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -109,7 +109,7 @@ public class GenTableColumnResource {
     @GetMapping("/gen-table-columns/{id}")
     public ResponseEntity<GenTableColumn> getGenTableColumn(@PathVariable Long id) {
         log.debug("REST request to get GenTableColumn : {}", id);
-        Optional<GenTableColumn> genTableColumn = genTableColumnRepository.findById(id);
+        Optional<GenTableColumn> genTableColumn = Optional.ofNullable(genTableColumnService.fetch(id));
         return ResponseUtil.wrapOrNotFound(genTableColumn);
     }
 
@@ -122,7 +122,7 @@ public class GenTableColumnResource {
     @DeleteMapping("/gen-table-columns/{id}")
     public ResponseEntity<Void> deleteGenTableColumn(@PathVariable Long id) {
         log.debug("REST request to delete GenTableColumn : {}", id);
-        genTableColumnRepository.deleteById(id);
+        genTableColumnService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

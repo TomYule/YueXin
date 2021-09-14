@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -109,6 +110,19 @@ public class GenTableResource {
     public ResponseEntity<GenTable> getGenTable(@PathVariable Long id) {
         log.debug("REST request to get GenTable : {}", id);
         Optional<GenTable> genTable = Optional.ofNullable(genTableService.fetch(id));
+        return ResponseUtil.wrapOrNotFound(genTable);
+    }
+
+    /**
+     * {@code GET  /gen-tables/preview-code/:id} : get the "id" genTable.
+     *
+     * @param id the id of the genTable to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the genTable, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/gen-tables/preview-code/{id}")
+    public ResponseEntity<Map<String, String>> previewCode(@PathVariable Long id) {
+        log.debug("REST request to get previewCode : {}", id);
+        Optional<Map<String, String>> genTable = Optional.ofNullable(genTableService.previewCode(id));
         return ResponseUtil.wrapOrNotFound(genTable);
     }
 

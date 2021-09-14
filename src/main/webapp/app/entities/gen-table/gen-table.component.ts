@@ -24,17 +24,19 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
   public totalItems = 0;
   // 显示搜索条件
   public showSearch = true;
-  // 日期范围
-  public dateRange: "";
-  // 查询参数
-  public  queryParams=  {
-    tableName: undefined,
-    tableComment: undefined
-  };
+  public multipleSelection = [];
+
+  // 预览参数
+  public preview = {
+    open: false,
+    title: "代码预览",
+    data: {},
+    activeName: "domain.java"
+  }
 
   data() {
     return {
-      pickerOptions2: {
+      pickerOptions: {
         shortcuts: [{
           text: '最近一周',
           onClick(picker) {
@@ -61,8 +63,12 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
           }
         }]
       },
-      value6: '',
-      value7: ''
+      dateRange: '',
+      queryParams: {
+        tableName: undefined,
+        tableComment: undefined
+      },
+
     };
   }
 
@@ -147,6 +153,17 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
     this.page = val;
     this.transition();
   }
+
+  /** 预览按钮 */
+  public handlePreview(row) {
+    this.genTableService()
+      .previewCode(row.id)
+      .then(res => {
+        this.preview.data = res;
+        this.preview.open = true;
+      });
+  };
+
   /** 生成代码操作 */
   public handleGenTable(row) {
     // const tableNames = row.tableName || this.tableNames;
