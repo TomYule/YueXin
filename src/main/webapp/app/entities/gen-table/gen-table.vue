@@ -219,6 +219,22 @@
                 :total="queryCount">
             </el-pagination>
         </div>
+
+
+        <!-- 预览界面 -->
+        <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body class="scrollbar">
+            <el-tabs v-model="preview.activeName">
+                <el-tab-pane
+                    v-for="(value, key) in preview.data"
+                    :label="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
+                    :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
+                    :key="key"
+                >
+                    <pre><code class="hljs" v-html="highlightedCode(value, key)"></code></pre>
+                </el-tab-pane>
+            </el-tabs>
+        </el-dialog>
+        <import-table ref="importTable" @ok="transition()" />
     </div>
 </template>
 

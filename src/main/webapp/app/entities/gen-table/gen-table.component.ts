@@ -4,12 +4,26 @@ import { Component, Vue, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 import { IGenTable } from '@/shared/model/gen-table.model';
 import AlertMixin from '@/shared/alert/alert.mixin';
-
 import JhiDataUtils from '@/shared/data/data-utils.service';
-
 import GenTableService from './gen-table.service';
 
+import ImportTable from "./gen-import-table.vue";
+
+import hljs from "highlight.js/lib/common";
+import "highlight.js/styles/github-dark.css";
+import JhiMetricsModal from "@/admin/metrics/metrics-modal.vue";
+
+hljs.registerLanguage("java", require("highlight.js/lib/languages/java"));
+hljs.registerLanguage("xml", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("html", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("vue", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("javascript", require("highlight.js/lib/languages/javascript"));
+hljs.registerLanguage("sql", require("highlight.js/lib/languages/sql"));
+
 @Component({
+  components: {
+    'importTable':ImportTable,
+  },
   mixins: [Vue2Filters.mixin],
 })
 export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
@@ -164,6 +178,14 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
       });
   };
 
+  /** 高亮显示 */
+  public highlightedCode(code, key) {
+    const vmName = key.substring(key.lastIndexOf("/") + 1, key.indexOf(".vm"));
+    var language = vmName.substring(vmName.indexOf(".") + 1, vmName.length);
+    const result = hljs.highlight(language, code || "", true);
+    return result.value || '&nbsp;';
+  };
+
   /** 生成代码操作 */
   public handleGenTable(row) {
     // const tableNames = row.tableName || this.tableNames;
@@ -179,9 +201,12 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
     //   downLoadZip("/tool/gen/batchGenCode?tables=" + tableNames, "ruoyi");
     // }
   };
+
   /** 打开导入表弹窗 */
   public openImportTable() {
-    // this.$refs.import.show();
+    if ((<any>this.$refs.importTable).show) {
+      (<any>this.$refs.importTable).show();
+    }
   };
 
   /** 修改按钮操作 */
