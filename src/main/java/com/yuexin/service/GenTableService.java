@@ -3,6 +3,7 @@ package com.yuexin.service;
 import com.yuexin.common.service.BaseService;
 import com.yuexin.domain.GenTable;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,4 +20,12 @@ public interface GenTableService extends BaseService<GenTable> {
      * @return 预览数据列表
      */
     public Map<String, String> previewCode(Long id);
+
+    /**
+     * 查询据库列表
+     *
+     * @param genTable 业务信息
+     * @return 数据库表集合
+     */
+    public List<GenTable> selectDbTableList(GenTable genTable);
 }

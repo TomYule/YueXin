@@ -7,9 +7,13 @@ import com.yuexin.common.util.VelocityInitializer;
 import com.yuexin.common.util.VelocityUtils;
 import com.yuexin.config.Constants;
 import com.yuexin.domain.GenTableColumn;
+import com.yuexin.service.converts.ITypeConvert;
+import com.yuexin.service.querys.IDbQuery;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.nutz.dao.Dao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yuexin.common.service.BaseServiceImpl;
 import com.yuexin.domain.GenTable;
@@ -28,6 +32,22 @@ import java.util.Map;
  */
 @Service
 public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements GenTableService{
+
+    /**
+     * 注入同名的一个ioc对象
+     */
+    @Autowired
+    protected Dao dao;
+
+    /**
+     * 数据库信息查询
+     */
+    private static IDbQuery dbQuery;
+
+    /**
+     * 类型转换
+     */
+    private static ITypeConvert typeConvert;
 
     /**
      * 设置主子表信息
@@ -96,5 +116,11 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
             dataMap.put(template, sw.toString());
         }
         return dataMap;
+    }
+
+    @Override
+    public List<GenTable> selectDbTableList(GenTable genTable) {
+
+        return null;
     }
 }
