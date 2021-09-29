@@ -62,7 +62,7 @@ export default class ImportTable extends mixins(JhiDataUtils, AlertMixin) {
   }
   // 多选框选中数据
   public handleSelectionChange(selection) {
-    this.genTables = selection.map(item => item.tableName);
+    this.multipleSelection = selection.map(item => item.tableName);
   }
 
   public retrieveAllGenTables(): void {
@@ -74,7 +74,7 @@ export default class ImportTable extends mixins(JhiDataUtils, AlertMixin) {
       sort: this.sort(),
     };
     this.genTableService()
-      .retrieve(paginationQuery)
+      .getDbGenTables(paginationQuery)
       .then(
         res => {
           this.genTables = res.data;
@@ -97,8 +97,8 @@ export default class ImportTable extends mixins(JhiDataUtils, AlertMixin) {
 
   public sort(): Array<any> {
     const result = [this.propOrder + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.propOrder !== 'id') {
-      result.push('id');
+    if (this.propOrder !== 'tableName') {
+      result.push('tableName');
     }
     return result;
   }

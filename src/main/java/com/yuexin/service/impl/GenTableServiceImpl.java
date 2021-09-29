@@ -2,18 +2,32 @@ package com.yuexin.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.yuexin.common.base.TableInfo;
 import com.yuexin.common.constant.GenConstants;
 import com.yuexin.common.util.VelocityInitializer;
 import com.yuexin.common.util.VelocityUtils;
 import com.yuexin.config.Constants;
 import com.yuexin.domain.GenTableColumn;
 import com.yuexin.service.converts.ITypeConvert;
+import com.yuexin.service.converts.TypeConvertRegistry;
+import com.yuexin.service.querys.DbQueryRegistry;
 import com.yuexin.service.querys.IDbQuery;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.nutz.dao.Cnd;
+import org.nutz.dao.DB;
 import org.nutz.dao.Dao;
+import org.nutz.dao.entity.Entity;
+import org.nutz.dao.entity.MappingField;
+import org.nutz.dao.pager.Pager;
+import org.nutz.dao.sql.Sql;
+import org.nutz.dao.util.Daos;
+import org.nutz.lang.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.yuexin.common.service.BaseServiceImpl;
 import com.yuexin.domain.GenTable;
@@ -23,6 +37,8 @@ import java.io.StringWriter;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 代码生成业务 服务层实现
@@ -49,6 +65,33 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
      */
     private static ITypeConvert typeConvert;
 
+    /**
+     * sql 查询抽象类 接口实现
+     * @return
+     */
+    private synchronized IDbQuery getDbQuery() {
+        if (null == dbQuery) {
+            DbQueryRegistry dbQueryRegistry = new DbQueryRegistry();
+            // 默认 MYSQL
+            dbQuery = Optional.ofNullable(dbQueryRegistry.getDbQuery(dao.meta().getType()))
+                .orElseGet(() -> dbQueryRegistry.getDbQuery(DB.MYSQL));
+        }
+        return dbQuery;
+    }
+
+    /**
+     * 数据库类型抽象类 封装 实现
+     * @return
+     */
+    private synchronized  ITypeConvert getTypeConvert() {
+        if (null == typeConvert) {
+            TypeConvertRegistry typeConvertRegistry = new TypeConvertRegistry();
+            // 默认 MYSQL
+            typeConvert = Optional.ofNullable(typeConvertRegistry.getTypeConvert(dao.meta().getType()))
+                .orElseGet(() -> typeConvertRegistry.getTypeConvert(DB.MYSQL));
+        }
+        return typeConvert;
+    }
     /**
      * 设置主子表信息
      *
@@ -119,8 +162,31 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
     }
 
     @Override
-    public List<GenTable> selectDbTableList(GenTable genTable) {
-
-        return null;
+    public Page<GenTable> selectDbTableList(String tableName, String tableComment, Pageable pageable) {
+        AtomicReference<String> orderByColumn = new AtomicReference();
+        AtomicReference<String> isAsc= new AtomicReference();
+        pageable.getSort().stream().forEach(sort -> {
+//            System.out.println(sort.getProperty());
+            orderByColumn.set(sort.getProperty());
+            if (sort.getDirection().isAscending()) {
+                isAsc.set("asc");
+            }
+            if (sort.getDirection().isDescending()) {
+                isAsc.set("desc");
+            }
+        });
+        if(Strings.isNotBlank(orderByColumn.get())){
+            MappingField field =dao.getEntity(TableInfo.class).getField(orderByColumn.get());
+            orderByColumn.set(field.getColumnName());
+        }
+        Sql sql = getDbQuery().tableNotInList(tableName,tableComment, orderByColumn.get(), isAsc.get());
+        Entity<TableInfo> entity = dao.getEntity(TableInfo.class);
+        Pager pager = this.dao().createPager(pageable.getPageNumber() + 1, pageable.getPageSize());
+        //记录数需手动设置
+        pager.setRecordCount((int) Daos.queryCount(dao, sql));
+        sql.setPager(pager);
+        sql.setEntity(entity).setCondition(Cnd.wrap(sql.getSourceSql()));
+        dao.execute(sql);
+        return new PageImpl(sql.getList(TableInfo.class), pageable, pager.getRecordCount());
     }
 }

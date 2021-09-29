@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -96,6 +97,22 @@ public class GenTableResource {
     public ResponseEntity<List<GenTable>> getAllGenTables(Pageable pageable) {
         log.debug("REST request to get a page of GenTables");
         Page<GenTable> page = genTableService.query(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /gen-tables} : get all the genTables.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of genTables in body.
+     */
+    @GetMapping("/gen-tables/db")
+    public ResponseEntity<List<GenTable>> getDbGenTables(@RequestParam(value = "tableName" ,required = false) String tableName,
+                                                         @RequestParam(value = "tableComment",required = false) String tableComment,
+                                                         Pageable pageable) {
+        log.debug("REST request to get a page of GenTables");
+        Page<GenTable> page = genTableService.selectDbTableList(tableName, tableComment, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
