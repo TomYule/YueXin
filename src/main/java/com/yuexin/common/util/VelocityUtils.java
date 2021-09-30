@@ -1,10 +1,10 @@
 package com.yuexin.common.util;
 
+import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONObject;
 
-import com.google.common.base.CaseFormat;
 import com.yuexin.common.constant.GenConstants;
 import com.yuexin.domain.GenTable;
 import com.yuexin.domain.GenTableColumn;
@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
 
 /**
  * 模板处理工具类
@@ -105,8 +106,9 @@ public class VelocityUtils {
         String subClassName = genTable.getSubTable().getClassName();
         //TestData
         //CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, "test_data"));
-        String subTableFkClassName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, subTableFkName);
-
+//        String subTableFkClassName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, subTableFkName);
+        //toPascalCase
+        String subTableFkClassName = NamingCase.toPascalCase( subTableFkName);
         context.put("subTable", subTable);
         context.put("subTableName", subTableName);
         context.put("subTableFkName", subTableFkName);
@@ -255,7 +257,8 @@ public class VelocityUtils {
     public static String getTreecode(JSONObject paramsObj) {
         if (paramsObj.containsKey(GenConstants.TREE_CODE)) {
 //            System.out.println(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, "test_data"));//testData
-            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_CODE));
+//            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_CODE));
+            return NamingCase.toCamelCase(paramsObj.getString(GenConstants.TREE_CODE));
         }
         return StringUtils.EMPTY;
     }
@@ -268,7 +271,8 @@ public class VelocityUtils {
      */
     public static String getTreeParentCode(JSONObject paramsObj) {
         if (paramsObj.containsKey(GenConstants.TREE_PARENT_CODE)) {
-            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_PARENT_CODE));
+//            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_PARENT_CODE));
+            return NamingCase.toCamelCase(paramsObj.getString(GenConstants.TREE_PARENT_CODE));
         }
         return StringUtils.EMPTY;
     }
@@ -281,7 +285,8 @@ public class VelocityUtils {
      */
     public static String getTreeName(JSONObject paramsObj) {
         if (paramsObj.containsKey(GenConstants.TREE_NAME)) {
-            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_NAME));
+//            return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, paramsObj.getString(GenConstants.TREE_NAME));
+            return NamingCase.toCamelCase(paramsObj.getString(GenConstants.TREE_NAME));
         }
         return StringUtils.EMPTY;
     }

@@ -180,7 +180,7 @@ public class GenConstants {
     /**
      * 需要
      */
-    public static final String REQUIRE = "1";
+    public static final Boolean REQUIRE = true;
 
     /**
      * 时间类型对应策略

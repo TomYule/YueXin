@@ -1,5 +1,6 @@
 package com.yuexin.common.base;
 
+import com.yuexin.domain.GenTableColumn;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.lang.Lang;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 /**
  * 数据库表
+ *
  * @author apple
  */
 public class TableInfo implements Serializable {
@@ -30,7 +32,7 @@ public class TableInfo implements Serializable {
      * 表的主键列信息
      */
     @Column
-    private ColumnInfo primaryKey;
+    private GenTableColumn primaryKey;
 
     @Column("create_time")
     private Date createTime;
@@ -38,7 +40,7 @@ public class TableInfo implements Serializable {
     /**
      * 表的列名(不包含主键)
      */
-    private List<ColumnInfo> columns;
+    private List<GenTableColumn> columns;
 
     /**
      * 类名(第一个字母大写)
@@ -66,19 +68,27 @@ public class TableInfo implements Serializable {
         this.tableComment = tableComment;
     }
 
-    public ColumnInfo getPrimaryKey() {
+    public GenTableColumn getPrimaryKey() {
         return primaryKey;
     }
 
-    public void setPrimaryKey(ColumnInfo primaryKey) {
+    public void setPrimaryKey(GenTableColumn primaryKey) {
         this.primaryKey = primaryKey;
     }
 
-    public List<ColumnInfo> getColumns() {
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public List<GenTableColumn> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<ColumnInfo> columns) {
+    public void setColumns(List<GenTableColumn> columns) {
         this.columns = columns;
     }
 
@@ -98,19 +108,9 @@ public class TableInfo implements Serializable {
         this.classname = classname;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public ColumnInfo getColumnsLast()
-    {
-        ColumnInfo columnInfo = null;
-        if (Lang.isNotEmpty(columns) && columns.size() > 0)
-        {
+    public GenTableColumn getColumnsLast() {
+        GenTableColumn columnInfo = null;
+        if (Lang.isNotEmpty(columns) && columns.size() > 0) {
             columnInfo = columns.get(0);
         }
         return columnInfo;

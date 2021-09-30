@@ -29,7 +29,7 @@ public class GenTableColumn extends BaseModel implements Serializable {
     /** 归属表编号 */
     @Column("table_id")
     @Comment("归属表编号")
-    private String tableId;
+    private Long tableId;
 
     /** 列名称 */
     @Column("column_name")
@@ -124,11 +124,11 @@ public class GenTableColumn extends BaseModel implements Serializable {
         this.id = id;
     }
 
-    public String getTableId() {
+    public Long getTableId() {
         return tableId;
     }
 
-    public void setTableId(String tableId) {
+    public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 

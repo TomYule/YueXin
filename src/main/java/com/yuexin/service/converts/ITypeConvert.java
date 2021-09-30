@@ -1,6 +1,6 @@
 package com.yuexin.service.converts;
 
-import com.yuexin.common.base.ColumnInfo;
+import com.yuexin.domain.GenTableColumn;
 import com.yuexin.service.converts.type.IColumnType;
 
 /**
@@ -14,9 +14,9 @@ public interface ITypeConvert {
      * @param columnInfo   字段列信息
      * @return ignore
      */
-    default IColumnType processTypeConvert(ColumnInfo columnInfo) {
+    default IColumnType processTypeConvert(GenTableColumn columnInfo) {
         // 该方法提供重写
-        return processTypeConvert( columnInfo.getDataType());
+        return processTypeConvert( columnInfo.getColumnType());
     }
 
 

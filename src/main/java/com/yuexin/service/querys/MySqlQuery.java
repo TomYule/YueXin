@@ -82,8 +82,18 @@ public class MySqlQuery extends AbstractDbQuery {
 
     @Override
     public Sql tableColumnsByName(String tableName) {
-        String sqlstr = "select column_name, data_type, column_comment from information_schema.columns " +
-                "where table_name = @tableName and table_schema = (select database()) order by ordinal_position";
+        String sqlstr = "SELECT column_name, " +
+            "       column_comment, " +
+            "       (CASE WHEN column_key = 'PRI' THEN '1' ELSE '0' END)                           AS is_pk, " +
+            "       (CASE WHEN (is_nullable = 'no' && column_key != 'PRI') THEN '1' ELSE NULL END) AS is_required, " +
+            "       ordinal_position                                                               AS sort, " +
+            "       (CASE WHEN extra = 'auto_increment' THEN '1' ELSE '0' END)                     AS is_increment, " +
+            "       column_type " +
+            "FROM information_schema.COLUMNS " +
+            "WHERE table_schema = ( " +
+            "    SELECT DATABASE()) " +
+            "  and table_name = @tableName " +
+            "ORDER BY ordinal_position";
         Sql sql = Sqls.create(sqlstr);
         sql.params().set("tableName", tableName);
         sql.setCallback(Sqls.callback.entities());
