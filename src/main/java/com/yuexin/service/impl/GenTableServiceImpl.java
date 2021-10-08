@@ -3,7 +3,6 @@ package com.yuexin.service.impl;
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.yuexin.common.base.TableInfo;
 import com.yuexin.common.constant.GenConstants;
 import com.yuexin.common.util.GenUtils;
 import com.yuexin.common.util.VelocityInitializer;
@@ -213,7 +212,9 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
     }
 
     @Override
-    public void importGenTable(List<GenTable> tableList) {
+    public void importGenTable(String tables) {
+        // 查询表信息
+        List<GenTable> tableList = this.selectTableList(tables);
         Optional<String> operName = SecurityUtils.getCurrentUserLogin();
         try {
             for (GenTable table : tableList) {
@@ -264,6 +265,15 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
     }
 
     @Override
+    public List<GenTable> selectTableList(String tableName) {
+        Sql sql = getDbQuery().tableByName(tableName);
+        Entity<GenTable> entity = dao.getEntity(GenTable.class);
+        sql.setEntity(entity).setCondition(Cnd.wrap(sql.getSourceSql()));
+        dao.execute(sql);
+        return sql.getList(GenTable.class);
+    }
+
+    @Override
     public Page<GenTable> selectDbTableList(String tableName, String tableComment, Pageable pageable) {
         AtomicReference<String> orderByColumn = new AtomicReference();
         AtomicReference<String> isAsc = new AtomicReference();
@@ -278,18 +288,18 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
             }
         });
         if (Strings.isNotBlank(orderByColumn.get())) {
-            MappingField field = dao.getEntity(TableInfo.class).getField(orderByColumn.get());
+            MappingField field = dao.getEntity(GenTable.class).getField(orderByColumn.get());
             orderByColumn.set(field.getColumnName());
         }
         Sql sql = getDbQuery().tableNotInList(tableName, tableComment, orderByColumn.get(), isAsc.get());
-        Entity<TableInfo> entity = dao.getEntity(TableInfo.class);
+        Entity<GenTable> entity = dao.getEntity(GenTable.class);
         Pager pager = this.dao().createPager(pageable.getPageNumber() + 1, pageable.getPageSize());
         //记录数需手动设置
         pager.setRecordCount((int) Daos.queryCount(dao, sql));
         sql.setPager(pager);
         sql.setEntity(entity).setCondition(Cnd.wrap(sql.getSourceSql()));
         dao.execute(sql);
-        return new PageImpl(sql.getList(TableInfo.class), pageable, pager.getRecordCount());
+        return new PageImpl(sql.getList(GenTable.class), pageable, pager.getRecordCount());
     }
 
     @Override

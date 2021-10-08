@@ -102,6 +102,18 @@ public class GenTableResource {
     }
 
     /**
+     * 导入table
+     * @param tableName
+     * @return
+     */
+    @GetMapping("/gen-tables/import-table")
+    public ResponseEntity<Void> importGenTable(@RequestParam(value = "tableName")String tableName) {
+        log.debug("REST request to import GenTable : {}", tableName);
+        genTableService.importGenTable(tableName);
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "genTable.import", tableName)).build();
+    }
+
+    /**
      * {@code GET  /gen-tables} : get all the genTables.
      *
      * @param pageable the pagination information.

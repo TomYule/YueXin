@@ -97,10 +97,11 @@ export default class GenTableService {
     });
   }
 
-  public importTable(data: any): Promise<any> {
+  public importTable(data: string): Promise<any> {
+    // console.log(data);
     return new Promise<any>((resolve, reject) => {
       axios
-        .post(`${baseApiUrl}/import-table/`,data)
+        .get(`${baseApiUrl}/import-table?tableName=${data}`)
         .then(res => {
           resolve(res.data);
         })

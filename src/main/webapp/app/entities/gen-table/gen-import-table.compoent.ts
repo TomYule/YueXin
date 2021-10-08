@@ -146,8 +146,10 @@ export default class ImportTable extends mixins(JhiDataUtils, AlertMixin) {
 
   /** 导入按钮操作 */
   public handleImportTable() {
+    // console.log(this.multipleSelection);
+    // console.log(this.multipleSelection.join(","));
     this.genTableService()
-      .importTable({tables: this.genTables.join(",")})
+      .importTable( this.multipleSelection.join(","))
       .then(res => {
         this.alertService().showAlert(res.msg, 'danger');
         if (res.code === 200) {

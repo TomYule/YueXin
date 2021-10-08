@@ -18,7 +18,7 @@ import java.util.Map;
 public interface GenTableService extends BaseService<GenTable> {
 
 
-    public void importGenTable(List<GenTable> tableList);
+    public void importGenTable(String tables);
 
     /**
      * 预览代码
@@ -27,6 +27,13 @@ public interface GenTableService extends BaseService<GenTable> {
      * @return 预览数据列表
      */
     public Map<String, String> previewCode(Long id);
+
+    /**
+     * 表列表查询
+     * @param tableName
+     * @return
+     */
+    public List<GenTable> selectTableList(String tableName);
 
     /**
      * 查询据库列表
