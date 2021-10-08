@@ -150,7 +150,7 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
         // 设置java字段名
         column.setJavaField(NamingCase.toCamelCase(columnName));
         // 设置默认类型
-        column.setJavaType(GenConstants.TYPE_STRING);
+        column.setJavaType(dataType);
         if (GenUtils.arraysContains(GenConstants.COLUMNTYPE_STR, dataType) || GenUtils.arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType)) {
             // 字符串长度超过500设置为文本域
             Integer columnLength = GenUtils.getColumnLength(column.getColumnType());

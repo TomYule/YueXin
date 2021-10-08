@@ -1,114 +1,129 @@
 package ${packageName}.controller;
 
-import java.util.List;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.enums.BusinessType;
 import ${packageName}.domain.${ClassName};
-import ${packageName}.service.I${ClassName}Service;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-#if($table.crud || $table.sub)
-import com.ruoyi.common.core.page.TableDataInfo;
-#elseif($table.tree)
-#end
+import ${packageName}.service.${ClassName}Service;
+import com.yuexin.web.rest.errors.BadRequestAlertException;
+
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
 /**
- * ${functionName}Controller
- * 
- * @author ${author}
- * @date ${datetime}
+ * REST controller for managing {@link com.yuexin.domain.${ClassName}}.
  */
 @RestController
-@RequestMapping("/${moduleName}/${businessName}")
-public class ${ClassName}Controller extends BaseController
-{
-    @Autowired
-    private I${ClassName}Service ${className}Service;
+@RequestMapping("/api")
+@Transactional
+public class ${ClassName}Resource {
 
-    /**
-     * 查询${functionName}列表
-     */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:list')")
-    @GetMapping("/list")
-#if($table.crud || $table.sub)
-    public TableDataInfo list(${ClassName} ${className})
-    {
-        startPage();
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        return getDataTable(list);
-    }
-#elseif($table.tree)
-    public AjaxResult list(${ClassName} ${className})
-    {
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        return AjaxResult.success(list);
-    }
-#end
+    private final Logger log = LoggerFactory.getLogger(${ClassName}Resource.class);
 
-    /**
-     * 导出${functionName}列表
-     */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:export')")
-    @Log(title = "${functionName}", businessType = BusinessType.EXPORT)
-    @GetMapping("/export")
-    public AjaxResult export(${ClassName} ${className})
-    {
-        List<${ClassName}> list = ${className}Service.select${ClassName}List(${className});
-        ExcelUtil<${ClassName}> util = new ExcelUtil<${ClassName}>(${ClassName}.class);
-        return util.exportExcel(list, "${functionName}数据");
+    private static final String ENTITY_NAME = "${className}";
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
+    private final ${ClassName}Service ${className}Service;
+
+    public ${ClassName}Resource(${ClassName}Service ${className}Service) {
+        this.${className}Service = ${className}Service;
     }
 
     /**
-     * 获取${functionName}详细信息
+     * {@code POST  /${BusinessName}} : Create a new ${className}.
+     *
+     * @param ${className} the ${className} to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ${className},
+     * or with status {@code 400 (Bad Request)} if the ${className} has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:query')")
-    @GetMapping(value = "/{${pkColumn.javaField}}")
-    public AjaxResult getInfo(@PathVariable("${pkColumn.javaField}") ${pkColumn.javaType} ${pkColumn.javaField})
-    {
-        return AjaxResult.success(${className}Service.select${ClassName}By${pkColumn.capJavaField}(${pkColumn.javaField}));
+    @PostMapping("/${BusinessName}")
+    public ResponseEntity<${ClassName}> create${ClassName}(@Valid @RequestBody ${ClassName} ${className}) throws URISyntaxException {
+        log.debug("REST request to save ${ClassName} : {}", ${className});
+        if (${className}.getId() != null) {
+            throw new BadRequestAlertException("A new ${className} cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        ${ClassName} result = ${className}Service.insert(${className});
+        return ResponseEntity.created(new URI("/api/${BusinessName}/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
-     * 新增${functionName}
+     * {@code PUT  /${BusinessName}} : Updates an existing ${className}.
+     *
+     * @param ${className} the ${className} to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated ${className},
+     * or with status {@code 400 (Bad Request)} if the ${className} is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the ${className} couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:add')")
-    @Log(title = "${functionName}", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody ${ClassName} ${className})
-    {
-        return toAjax(${className}Service.insert${ClassName}(${className}));
+    @PutMapping("/${BusinessName}")
+    public ResponseEntity<${ClassName}> update${ClassName}(@Valid @RequestBody ${ClassName} ${className}) throws URISyntaxException {
+        log.debug("REST request to update ${ClassName} : {}", ${className});
+        if (${className}.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        ${className}Service.update(${className});
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, ${className}.getId().toString()))
+            .body(${className});
     }
 
     /**
-     * 修改${functionName}
+     * {@code GET  /${BusinessName}} : get all the ${className}s.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ${className}s in body.
      */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:edit')")
-    @Log(title = "${functionName}", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody ${ClassName} ${className})
-    {
-        return toAjax(${className}Service.update${ClassName}(${className}));
+    @GetMapping("/${BusinessName}")
+    public ResponseEntity<List<${ClassName}>> getAll${ClassName}s(Pageable pageable) {
+        log.debug("REST request to get a page of ${ClassName}s");
+        Page<${ClassName}> page = ${className}Service.query(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * 删除${functionName}
+     * {@code GET  /${BusinessName}/:id} : get the "id" ${className}.
+     *
+     * @param id the id of the ${className} to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ${className}, or with status {@code 404 (Not Found)}.
      */
-    @PreAuthorize("@ss.hasPermi('${permissionPrefix}:remove')")
-    @Log(title = "${functionName}", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{${pkColumn.javaField}s}")
-    public AjaxResult remove(@PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s)
-    {
-        return toAjax(${className}Service.delete${ClassName}By${pkColumn.capJavaField}s(${pkColumn.javaField}s));
+    @GetMapping("/${BusinessName}/{id}")
+    public ResponseEntity<${ClassName}> get${ClassName}(@PathVariable Long id) {
+        log.debug("REST request to get ${ClassName} : {}", id);
+        Optional<${ClassName}> ${className} = Optional.ofNullable(${className}Service.fetch(id));
+        return ResponseUtil.wrapOrNotFound(${className});
+    }
+
+    /**
+     * {@code DELETE  /${BusinessName}/:id} : delete the "id" ${className}.
+     *
+     * @param id the id of the ${className} to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/${BusinessName}/{id}")
+    public ResponseEntity<Void> delete${ClassName}(@PathVariable Long id) {
+        log.debug("REST request to delete ${ClassName} : {}", id);
+        ${className}Service.delete(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

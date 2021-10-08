@@ -3,18 +3,23 @@ package ${packageName}.domain;
 #foreach ($import in $importList)
 import ${import};
 #end
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import com.ruoyi.common.annotation.Excel;
+import io.swagger.annotations.ApiModel;
+import org.nutz.dao.entity.annotation.*;
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
+
+import com.yuexin.common.base.BaseModel;
+
 #if($table.crud || $table.sub)
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.yuexin.common.base.BaseModel;
 #elseif($table.tree)
 import com.ruoyi.common.core.domain.TreeEntity;
 #end
 
 /**
  * ${functionName}对象 ${tableName}
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
@@ -23,13 +28,21 @@ import com.ruoyi.common.core.domain.TreeEntity;
 #elseif($table.tree)
 #set($Entity="TreeEntity")
 #end
-public class ${ClassName} extends ${Entity}
-{
+@ApiModel(description = "${functionName} entity.\n@author ${author}")
+@Table("${tableName}")
+public class ${ClassName} extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField))
     /** $column.columnComment */
+#if($column.columnName == $pkColumn.columnName)
+    #if($column.javaType == 'Long')
+    @Id
+    #else
+    @Name
+    #end
+#end
 #if($column.list)
 #set($parentheseIndex=$column.columnComment.indexOf("（"))
 #if($parentheseIndex != -1)
@@ -37,6 +50,7 @@ public class ${ClassName} extends ${Entity}
 #else
 #set($comment=$column.columnComment)
 #end
+
 #if($parentheseIndex != -1)
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
 #elseif($column.javaType == 'Date')
@@ -46,6 +60,8 @@ public class ${ClassName} extends ${Entity}
     @Excel(name = "${comment}")
 #end
 #end
+    @Column("${column.columnName}")
+    @Comment("$column.columnComment")
     private $column.javaType $column.javaField;
 
 #end
@@ -62,26 +78,22 @@ public class ${ClassName} extends ${Entity}
 #else
 #set($AttrName=$column.javaField.substring(0,1).toUpperCase() + ${column.javaField.substring(1)})
 #end
-    public void set${AttrName}($column.javaType $column.javaField) 
-    {
+    public void set${AttrName}($column.javaType $column.javaField){
         this.$column.javaField = $column.javaField;
     }
 
-    public $column.javaType get${AttrName}() 
-    {
+    public $column.javaType get${AttrName}(){
         return $column.javaField;
     }
 #end
 #end
 
 #if($table.sub)
-    public List<${subClassName}> get${subClassName}List()
-    {
+    public List<${subClassName}> get${subClassName}List(){
         return ${subclassName}List;
     }
 
-    public void set${subClassName}List(List<${subClassName}> ${subclassName}List)
-    {
+    public void set${subClassName}List(List<${subClassName}> ${subclassName}List){
         this.${subclassName}List = ${subclassName}List;
     }
 

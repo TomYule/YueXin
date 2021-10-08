@@ -2,11 +2,8 @@ package com.yuexin.common.util;
 
 import cn.hutool.core.text.NamingCase;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.CaseFormat;
-import com.yuexin.common.constant.GenConstants;
 import com.yuexin.config.GenConfig;
 import com.yuexin.domain.GenTable;
-import com.yuexin.domain.GenTableColumn;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -56,10 +53,11 @@ public class GenUtils {
      * @return 业务名
      */
     public static String getBusinessName(String tableName) {
-        int lastIndex = tableName.lastIndexOf("_");
-        int nameLength = tableName.length();
-        String businessName = StringUtils.substring(tableName, lastIndex + 1, nameLength);
-        return businessName;
+//        int lastIndex = tableName.lastIndexOf("_");
+//        int nameLength = tableName.length();
+//        String businessName = StringUtils.substring(tableName, lastIndex + 1, nameLength);
+//        return businessName;
+        return NamingCase.toKebabCase(tableName);
     }
 
     /**
