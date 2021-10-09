@@ -101,6 +101,10 @@ public class GenTableColumn extends BaseModel implements Serializable {
     @Comment("显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）")
     private String htmlType;
 
+    @Column("ts_type")
+    @Comment("ts类型（number、string、boolean、any、enum、void、null、undefined、never）")
+    private String tsType;
+
     /** 字典类型 */
     @Column("dict_type")
     @Comment("字典类型")
@@ -242,6 +246,14 @@ public class GenTableColumn extends BaseModel implements Serializable {
 
     public void setHtmlType(String htmlType) {
         this.htmlType = htmlType;
+    }
+
+    public String getTsType() {
+        return tsType;
+    }
+
+    public void setTsType(String tsType) {
+        this.tsType = tsType;
     }
 
     public String getDictType() {

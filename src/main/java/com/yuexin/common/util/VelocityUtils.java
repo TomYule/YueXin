@@ -130,6 +130,8 @@ public class VelocityUtils {
         templates.add("vm/java/controller.java.vm");
         templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
+        templates.add("vm/js/model.ts.vm");
+        templates.add("vm/js/service.ts.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory)) {
             templates.add("vm/vue/index.vue.vm");
         } else if (GenConstants.TPL_TREE.equals(tplCategory)) {
@@ -174,6 +176,8 @@ public class VelocityUtils {
             fileName = businessName + "Menu.sql";
         } else if (template.contains("api.js.vm")) {
             fileName = StrUtil.format("{}/api/{}/{}.js", vuePath, moduleName, businessName);
+        } else if (template.contains("model.js.vm")) {
+            fileName = StrUtil.format("/app/shared/model/{}.model.ts", moduleName);
         } else if (template.contains("index.vue.vm")) {
             fileName = StrUtil.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
         } else if (template.contains("index-tree.vue.vm")) {

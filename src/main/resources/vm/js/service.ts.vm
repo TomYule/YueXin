@@ -1,53 +1,75 @@
-import request from '@/utils/request'
+#set($buildPagination="$")
+import axios from 'axios';
 
-// 查询${functionName}列表
-export function list${BusinessName}(query) {
-  return request({
-    url: '/${moduleName}/${businessName}/list',
-    method: 'get',
-    params: query
-  })
-}
+import buildPaginationQueryOpts from '@/shared/sort/sorts';
 
-// 查询${functionName}详细
-export function get${BusinessName}(${pkColumn.javaField}) {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'get'
-  })
-}
+import { I${ClassName} } from '@/shared/model/${BusinessName}.model';
 
-// 新增${functionName}
-export function add${BusinessName}(data) {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'post',
-    data: data
-  })
-}
+const baseApiUrl = 'api/${BusinessName}s';
 
-// 修改${functionName}
-export function update${BusinessName}(data) {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'put',
-    data: data
-  })
-}
+export default class ${ClassName}Service {
+    public find($pkColumn.columnName: $pkColumn.tsType): Promise<I${ClassName}> {
+        return new Promise<I${ClassName}>((resolve, reject) => {
+            axios
+                .get(`${baseApiUrl}/${id}`)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
 
-// 删除${functionName}
-export function del${BusinessName}(${pkColumn.javaField}) {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'delete'
-  })
-}
+    public retrieve(paginationQuery?: any): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            axios
+                .get(baseApiUrl + `? ${buildPagination}{buildPaginationQueryOpts(paginationQuery)}`)
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
 
-// 导出${functionName}
-export function export${BusinessName}(query) {
-  return request({
-    url: '/${moduleName}/${businessName}/export',
-    method: 'get',
-    params: query
-  })
+    public delete($pkColumn.columnName: $pkColumn.tsType): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            axios
+                .delete(`${baseApiUrl}/${id}`)
+                .then(res => {
+                    resolve(res);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
+
+    public create(entity: I${ClassName}): Promise<I${ClassName}> {
+        return new Promise<I${ClassName}>((resolve, reject) => {
+            axios
+                .post(`${baseApiUrl}`, entity)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
+
+    public update(entity: I${ClassName}): Promise<I${ClassName}> {
+        return new Promise<I${ClassName}>((resolve, reject) => {
+            axios
+                .put(`${baseApiUrl}`, entity)
+                .then(res => {
+                    resolve(res.data);
+                })
+                .catch(err => {
+                    reject(err);
+                });
+        });
+    }
 }

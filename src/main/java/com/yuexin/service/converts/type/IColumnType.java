@@ -19,4 +19,11 @@ public interface IColumnType {
      * @return 字段类型完整名
      */
     String getPkg();
+
+    /**
+     * 获取ts类型
+     * @return
+     */
+    String getTsType();
+
 }

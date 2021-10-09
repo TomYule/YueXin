@@ -1,0 +1,13 @@
+export interface I${ClassName} {
+#foreach ($column in $columns)
+    ${column.columnName}?: $column.tsType;
+#end
+}
+
+export class ${ClassName} implements I${ClassName} {
+    constructor(
+    #foreach ($column in $columns)
+        public  ${column.columnName}?: $column.tsType,
+    #end
+    ) {}
+}

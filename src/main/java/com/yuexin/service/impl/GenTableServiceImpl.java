@@ -143,14 +143,16 @@ public class GenTableServiceImpl extends BaseServiceImpl<GenTable> implements Ge
      * 初始化列属性字段
      */
     public void initColumnField(GenTableColumn column, GenTable table) {
-        String dataType = getTypeConvert().processTypeConvert(column.getColumnType()).getType();
         String columnName = column.getColumnName();
         column.setTableId(table.getId());
         column.setCreateBy(table.getCreateBy());
         // 设置java字段名
         column.setJavaField(NamingCase.toCamelCase(columnName));
         // 设置默认类型
+        String dataType = getTypeConvert().processTypeConvert(column.getColumnType()).getType();
+        String tsType = getTypeConvert().processTypeConvert(column.getColumnType()).getTsType();
         column.setJavaType(dataType);
+        column.setTsType(tsType);
         if (GenUtils.arraysContains(GenConstants.COLUMNTYPE_STR, dataType) || GenUtils.arraysContains(GenConstants.COLUMNTYPE_TEXT, dataType)) {
             // 字符串长度超过500设置为文本域
             Integer columnLength = GenUtils.getColumnLength(column.getColumnType());
