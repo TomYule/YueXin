@@ -182,6 +182,8 @@ export default class GenTable extends mixins(JhiDataUtils, AlertMixin) {
   public highlightedCode(code, key) {
     const vmName = key.substring(key.lastIndexOf("/") + 1, key.indexOf(".vm"));
     var language = vmName.substring(vmName.indexOf(".") + 1, vmName.length);
+    // language = language =='ts'? 'js':language;
+    // console.log(vmName,language);
     const result = hljs.highlight(language, code || "", true);
     return result.value || '&nbsp;';
   };
