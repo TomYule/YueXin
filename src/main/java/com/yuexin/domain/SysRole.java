@@ -66,31 +66,6 @@ public class SysRole extends BaseModel implements Serializable {
     @Comment("删除标志（0代表存在 2代表删除）")
     private Boolean delFlag;
 
-    /** 创建者 */
-    @Column("create_by")
-    @Comment("创建者")
-    private String createBy;
-
-    /** 创建时间 */
-    @Column("create_time")
-    @Comment("创建时间")
-    private Date createTime;
-
-    /** 更新者 */
-    @Column("update_by")
-    @Comment("更新者")
-    private String updateBy;
-
-    /** 更新时间 */
-    @Column("update_time")
-    @Comment("更新时间")
-    private Date updateTime;
-
-    /** 备注 */
-    @Column("remark")
-    @Comment("备注")
-    private String remark;
-
 //    @ManyToMany
 //    @JoinTable(name = "sys_role_sys_menu",
 //               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),

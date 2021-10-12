@@ -132,12 +132,12 @@ public class VelocityUtils {
         templates.add("vm/js/api.js.vm");
         templates.add("vm/js/model.ts.vm");
         templates.add("vm/js/service.ts.vm");
-        templates.add("vm/vue/component.ts.vm");
-        templates.add("vm/vue/details.ts.vm");
-        templates.add("vm/vue/update.ts.vm");
         templates.add("vm/vue/component.vue.vm");
+        templates.add("vm/vue/component.ts.vm");
         templates.add("vm/vue/details.vue.vm");
+        templates.add("vm/vue/details.ts.vm");
         templates.add("vm/vue/update.vue.vm");
+        templates.add("vm/vue/update.ts.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory)) {
             templates.add("vm/vue/index.vue.vm");
         } else if (GenConstants.TPL_TREE.equals(tplCategory)) {
