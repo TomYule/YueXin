@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
 import ${packageName}.domain.${subClassName};
 #end
+import com.yuexin.common.service.BaseServiceImpl;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.service.${ClassName}Service;
 

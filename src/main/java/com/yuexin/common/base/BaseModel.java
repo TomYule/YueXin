@@ -36,11 +36,6 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
     @Column("update_time")
     protected LocalDateTime updateTime;
 
-    /** 备注 */
-    @Column("remark")
-    @Comment("备注")
-    protected String remark;
-
     public String uuid() {
         return R.UU32().toLowerCase();
     }
@@ -92,11 +87,4 @@ public abstract class BaseModel extends DataBaseEntity implements Serializable {
         this.updateBy = updateBy;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
 }

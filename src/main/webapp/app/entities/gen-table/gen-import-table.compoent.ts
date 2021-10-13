@@ -152,9 +152,9 @@ export default class ImportTable extends mixins(JhiDataUtils, AlertMixin) {
       .importTable( this.multipleSelection.join(","))
       .then(res => {
         this.alertService().showAlert(res.msg, 'danger');
-        if (res.code === 200) {
-          this.visible = false;
+        if (res.code === 204) {
           this.$emit("ok");
+          this.visible = false;
         }
       });
   }

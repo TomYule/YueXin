@@ -1,310 +1,208 @@
 package com.yuexin.domain;
 
 import io.swagger.annotations.ApiModel;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.nutz.dao.entity.annotation.*;
+import org.nutz.dao.entity.annotation.Column;
+import org.nutz.dao.entity.annotation.Id;
+import org.nutz.dao.entity.annotation.Table;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import com.yuexin.common.base.BaseModel;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+
 
 /**
- * 部门表 entity.\n@author haiming
+ * 部门表对象 sys_dept
+ *
+ * @author yuexin
+ * @date 2021-10-13T11:22:01.147
  */
-@ApiModel(description = "部门表 entity.\n@author haiming")
-@Entity
-@Table(name = "sys_dept")
-public class SysDept implements Serializable {
-
+@ApiModel(description = "部门表 entity.\n@author yuexin")
+@Table("sys_dept")
+public class SysDept extends BaseModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 部门id
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column("id")
+    @Comment("部门id")
     private Long id;
 
-    @NotNull
-    @Column(name = "dept_name", nullable = false)
-    private String deptName;
+    /**
+     * 父部门id
+     */
+//    @Excel(name = "父部门id")
+    @Column("parent_id")
+    @Comment("父部门id")
+    private Long parentId;
 
-    @Column(name = "parent_id")
-    private String parentId;
-
-    @Column(name = "ancestors")
+    /**
+     * 祖级列表
+     */
+//    @Excel(name = "祖级列表")
+    @Column("ancestors")
+    @Comment("祖级列表")
     private String ancestors;
 
-    @Column(name = "order_num")
+    /**
+     * 部门名称
+     */
+
+//    @Excel(name = "部门名称")
+    @Column("dept_name")
+    @Comment("部门名称")
+    private String deptName;
+
+    /**
+     * 显示顺序
+     */
+//    @Excel(name = "显示顺序")
+    @Column("order_num")
+    @Comment("显示顺序")
     private Integer orderNum;
 
-    @Column(name = "leader")
+    /**
+     * 负责人
+     */
+//    @Excel(name = "负责人")
+    @Column("leader")
+    @Comment("负责人")
     private String leader;
 
-    @Column(name = "phone")
+    /**
+     * 联系电话
+     */
+//    @Excel(name = "联系电话")
+    @Column("phone")
+    @Comment("联系电话")
     private String phone;
 
-    @Column(name = "email")
+    /**
+     * 邮箱
+     */
+//    @Excel(name = "邮箱")
+    @Column("email")
+    @Comment("邮箱")
     private String email;
 
-    @Column(name = "status")
+    /**
+     * 部门状态（0正常 1停用）
+     */
+//    @Excel(name = "部门状态", readConverterExp = "$column.readConverterExp()")
+    @Column("status")
+    @Comment("部门状态（0正常 1停用）")
     private String status;
 
-    @Column(name = "del_flag")
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    @Column("del_flag")
+    @Comment("删除标志（0代表存在 2代表删除）")
     private String delFlag;
-
-    @Column(name = "create_by")
-    private String createBy;
-
-    @Column(name = "create_time")
-    private LocalDate createTime;
-
-    @Column(name = "update_by")
-    private String updateBy;
-
-    @Column(name = "up_local_date")
-    private LocalDate upLocalDate;
-
-//    @OneToMany(mappedBy = "sysDept")
-//    private Set<SysUser> deptIds = new HashSet<>();
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here
-    public Long getId() {
-        return id;
-    }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getDeptName() {
-        return deptName;
+    public Long getId() {
+        return id;
     }
 
-    public SysDept deptName(String deptName) {
-        this.deptName = deptName;
-        return this;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String getParentId() {
+    public Long getParentId() {
         return parentId;
-    }
-
-    public SysDept parentId(String parentId) {
-        this.parentId = parentId;
-        return this;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getAncestors() {
-        return ancestors;
-    }
-
-    public SysDept ancestors(String ancestors) {
-        this.ancestors = ancestors;
-        return this;
     }
 
     public void setAncestors(String ancestors) {
         this.ancestors = ancestors;
     }
 
-    public Integer getOrderNum() {
-        return orderNum;
+    public String getAncestors() {
+        return ancestors;
     }
 
-    public SysDept orderNum(Integer orderNum) {
-        this.orderNum = orderNum;
-        return this;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getDeptName() {
+        return deptName;
     }
 
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 
-    public String getLeader() {
-        return leader;
-    }
-
-    public SysDept leader(String leader) {
-        this.leader = leader;
-        return this;
+    public Integer getOrderNum() {
+        return orderNum;
     }
 
     public void setLeader(String leader) {
         this.leader = leader;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public SysDept phone(String phone) {
-        this.phone = phone;
-        return this;
+    public String getLeader() {
+        return leader;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public SysDept email(String email) {
-        this.email = email;
-        return this;
+    public String getPhone() {
+        return phone;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public SysDept status(String status) {
-        this.status = status;
-        return this;
+    public String getEmail() {
+        return email;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public SysDept delFlag(String delFlag) {
-        this.delFlag = delFlag;
-        return this;
+    public String getStatus() {
+        return status;
     }
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
     }
 
-    public String getCreateBy() {
-        return createBy;
+    public String getDelFlag() {
+        return delFlag;
     }
 
-    public SysDept createBy(String createBy) {
-        this.createBy = createBy;
-        return this;
-    }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public LocalDate getCreateTime() {
-        return createTime;
-    }
-
-    public SysDept createTime(LocalDate createTime) {
-        this.createTime = createTime;
-        return this;
-    }
-
-    public void setCreateTime(LocalDate createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public SysDept updateBy(String updateBy) {
-        this.updateBy = updateBy;
-        return this;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public LocalDate getUpLocalDate() {
-        return upLocalDate;
-    }
-
-    public SysDept upLocalDate(LocalDate upLocalDate) {
-        this.upLocalDate = upLocalDate;
-        return this;
-    }
-
-    public void setUpLocalDate(LocalDate upLocalDate) {
-        this.upLocalDate = upLocalDate;
-    }
-//
-//    public Set<SysUser> getDeptIds() {
-//        return deptIds;
-//    }
-//
-//    public SysDept deptIds(Set<SysUser> sysUsers) {
-//        this.deptIds = sysUsers;
-//        return this;
-//    }
-//
-//    public SysDept addDeptId(SysUser sysUser) {
-//        this.deptIds.add(sysUser);
-//        sysUser.setSysDept(this);
-//        return this;
-//    }
-//
-//    public SysDept removeDeptId(SysUser sysUser) {
-//        this.deptIds.remove(sysUser);
-//        sysUser.setSysDept(null);
-//        return this;
-//    }
-
-//    public void setDeptIds(Set<SysUser> sysUsers) {
-//        this.deptIds = sysUsers;
-//    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof SysDept)) {
-            return false;
-        }
-        return id != null && id.equals(((SysDept) o).id);
-    }
-
-    @Override
-    public int hashCode() {
-        return 31;
-    }
-
-    // prettier-ignore
     @Override
     public String toString() {
-        return "SysDept{" +
-            "id=" + getId() +
-            ", deptName='" + getDeptName() + "'" +
-            ", parentId='" + getParentId() + "'" +
-            ", ancestors='" + getAncestors() + "'" +
-            ", orderNum=" + getOrderNum() +
-            ", leader='" + getLeader() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", delFlag='" + getDelFlag() + "'" +
-            ", createBy='" + getCreateBy() + "'" +
-            ", createTime='" + getCreateTime() + "'" +
-            ", updateBy='" + getUpdateBy() + "'" +
-            ", upLocalDate='" + getUpLocalDate() + "'" +
-            "}";
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", getId())
+            .append("parentId", getParentId())
+            .append("ancestors", getAncestors())
+            .append("deptName", getDeptName())
+            .append("orderNum", getOrderNum())
+            .append("leader", getLeader())
+            .append("phone", getPhone())
+            .append("email", getEmail())
+            .append("status", getStatus())
+            .append("delFlag", getDelFlag())
+            .append("createBy", getCreateBy())
+            .append("createTime", getCreateTime())
+            .append("updateBy", getUpdateBy())
+            .append("updateTime", getUpdateTime())
+            .toString();
     }
 }

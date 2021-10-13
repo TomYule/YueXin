@@ -29,7 +29,7 @@ import '../content/scss/vendor.scss';
 import AlertService from '@/shared/alert/alert.service';
 import TranslationService from '@/locale/translation.service';
 import ConfigurationService from '@/admin/configuration/configuration.service';
-
+import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, handleTree } from "@/shared/utils/common";
 /* tslint:disable */
 
 import GenTableService from '@/entities/gen-table/gen-table.service';
@@ -51,6 +51,15 @@ import SysMenuService from '@/entities/sys-menu/sys-menu.service';
 
 /* tslint:enable */
 Vue.config.productionTip = false;
+// 全局方法挂载
+Vue.prototype.parseTime = parseTime
+Vue.prototype.resetForm = resetForm
+Vue.prototype.addDateRange = addDateRange
+Vue.prototype.selectDictLabel = selectDictLabel
+Vue.prototype.selectDictLabels = selectDictLabels
+Vue.prototype.download = download
+Vue.prototype.handleTree = handleTree
+
 config.initVueApp(Vue);
 config.initFortAwesome(Vue);
 bootstrapVueConfig.initBootstrapVue(Vue);

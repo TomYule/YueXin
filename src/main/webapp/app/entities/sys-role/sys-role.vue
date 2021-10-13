@@ -78,7 +78,7 @@
                                 <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="$t('entity.action.edit')">Edit</span>
                             </router-link>
-                            <b-button v-on:click="prepareRemove(sysRole)"
+                            <b-button v-on:click="prepareRemove(scope.row)"
                                       variant="danger"
                                       class="btn btn-sm"
                                       v-b-modal.removeEntity>

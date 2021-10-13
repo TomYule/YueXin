@@ -94,6 +94,11 @@ public class GenTable extends BaseModel implements Serializable {
     @Comment("其它生成选项")
     private String options;
 
+    /** 备注 */
+    @Column("remark")
+    @Comment("备注")
+    protected String remark;
+
     /** 子表信息 */
     private GenTable subTable;
     /** 主键信息 */
@@ -245,6 +250,14 @@ public class GenTable extends BaseModel implements Serializable {
 
     public void setColumns(List<GenTableColumn> columns) {
         this.columns = columns;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override

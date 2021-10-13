@@ -1,7 +1,7 @@
 package com.yuexin.web.rest;
 
 import com.yuexin.domain.SysDept;
-import com.yuexin.repository.SysDeptRepository;
+import com.yuexin.service.SysDeptService;
 import com.yuexin.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -34,10 +34,10 @@ public class SysDeptResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SysDeptRepository sysDeptRepository;
+    private final SysDeptService sysDeptService;
 
-    public SysDeptResource(SysDeptRepository sysDeptRepository) {
-        this.sysDeptRepository = sysDeptRepository;
+    public SysDeptResource(SysDeptService sysDeptService) {
+        this.sysDeptService = sysDeptService;
     }
 
     /**
@@ -53,7 +53,7 @@ public class SysDeptResource {
         if (sysDept.getId() != null) {
             throw new BadRequestAlertException("A new sysDept cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SysDept result = sysDeptRepository.save(sysDept);
+        SysDept result = sysDeptService.insert(sysDept);
         return ResponseEntity.created(new URI("/api/sys-depts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,10 +74,10 @@ public class SysDeptResource {
         if (sysDept.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        SysDept result = sysDeptRepository.save(sysDept);
+        sysDeptService.update(sysDept);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sysDept.getId().toString()))
-            .body(result);
+            .body(sysDept);
     }
 
     /**
@@ -88,7 +88,7 @@ public class SysDeptResource {
     @GetMapping("/sys-depts")
     public List<SysDept> getAllSysDepts() {
         log.debug("REST request to get all SysDepts");
-        return sysDeptRepository.findAll();
+        return sysDeptService.query();
     }
 
     /**
@@ -100,7 +100,7 @@ public class SysDeptResource {
     @GetMapping("/sys-depts/{id}")
     public ResponseEntity<SysDept> getSysDept(@PathVariable Long id) {
         log.debug("REST request to get SysDept : {}", id);
-        Optional<SysDept> sysDept = sysDeptRepository.findById(id);
+        Optional<SysDept> sysDept = Optional.ofNullable(sysDeptService.fetch(id));
         return ResponseUtil.wrapOrNotFound(sysDept);
     }
 
@@ -113,7 +113,7 @@ public class SysDeptResource {
     @DeleteMapping("/sys-depts/{id}")
     public ResponseEntity<Void> deleteSysDept(@PathVariable Long id) {
         log.debug("REST request to delete SysDept : {}", id);
-        sysDeptRepository.deleteById(id);
+        sysDeptService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

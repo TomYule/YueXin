@@ -66,6 +66,11 @@ public class SysRole extends BaseModel implements Serializable {
     @Comment("删除标志（0代表存在 2代表删除）")
     private Boolean delFlag;
 
+    /** 备注 */
+    @Column("remark")
+    @Comment("备注")
+    protected String remark;
+
 //    @ManyToMany
 //    @JoinTable(name = "sys_role_sys_menu",
 //               joinColumns = @JoinColumn(name = "sys_role_id", referencedColumnName = "id"),
@@ -150,6 +155,14 @@ public class SysRole extends BaseModel implements Serializable {
         this.delFlag = delFlag;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -182,9 +195,9 @@ public class SysRole extends BaseModel implements Serializable {
             ", createTime=" + createTime +
             ", updateBy='" + updateBy + '\'' +
             ", updateTime=" + updateTime +
-            ", remark='" + remark + '\'' +
             ", sysMenus=" + sysMenus +
             ", sysUsers=" + sysUsers +
+            ", remark='" + remark + '\'' +
             '}';
     }
 }
